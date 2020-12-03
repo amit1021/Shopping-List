@@ -12,20 +12,24 @@ private Button button;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_main);
-        button = (Button)findViewById(R.id.move);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                openLogin();
-            }
-        });
-    }
 
-    public void openLogin(){
         Intent intent = new Intent(this, Login.class);
         startActivity(intent);
+
+//
+//        button = (Button)findViewById(R.id.move);
+//        button.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                openLogin();
+//            }
+//        });
     }
+
+//    public void openLogin(){
+//        Intent intent = new Intent(this, Login.class);
+//        startActivity(intent);
+//    }
 
 }
