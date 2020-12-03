@@ -5,21 +5,21 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
+
 import android.os.Bundle;
+
 import android.util.Log;
-import android.view.Display;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
+
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -29,6 +29,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+
 
 public class ListActivity extends AppCompatActivity {
     private AlertDialog.Builder dialogBuilder;
@@ -41,11 +42,15 @@ public class ListActivity extends AppCompatActivity {
     private String it;
     private FirebaseDatabase database;
     private DatabaseReference mDatabase;
+    private DatabaseReference mCurrentUser;
 
-    private FirebaseUser User;
+
     private FirebaseAuth auth;
+    String userID;
 
+    ArrayList<String> listS;
 
+    ArrayList <String> listUid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,8 +79,6 @@ public class ListActivity extends AppCompatActivity {
         ArrayAdapter arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, items);
         listView.setAdapter(arrayAdapter);
 
-        auth = FirebaseAuth.getInstance();
-        User = auth.getCurrentUser();
         database = FirebaseDatabase.getInstance();
         mDatabase = database.getReference().child("shopList");
 
@@ -91,14 +94,31 @@ public class ListActivity extends AppCompatActivity {
         });
 
         addList = findViewById(R.id.addList);
+
         addList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String keyId = mDatabase.push().getKey();
                 mDatabase.child(keyId).setValue(shop_list);
 
+                listUid = new ArrayList<>();
+                auth = FirebaseAuth.getInstance();
+                mCurrentUser = database.getReference();
 
+//                    @Override
+                mCurrentUser.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        listS = (ArrayList)snapshot.child("user").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("shopListUID").getValue();
+                        listS.add(keyId);
+                        FirebaseDatabase.getInstance().getReference().child("user").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("shopListUID").setValue(listS);
+                        System.out.println(listS);
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
 
+                    }
+                });
             }
         });
 

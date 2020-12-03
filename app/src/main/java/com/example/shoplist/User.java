@@ -16,6 +16,7 @@ public class User {
         this.email = email;
         this.password = password;
         shopListUID = new ArrayList<>();
+        shopListUID.add("amit the Queen");
     }
 
     public ArrayList<String> getShopListUID() {

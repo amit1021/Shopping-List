@@ -89,7 +89,7 @@ public class Register extends AppCompatActivity {
 
     public void updateUI(FirebaseUser currentUser){
         String keyId = mDatabase.push().getKey();
-        mDatabase.child(keyId).setValue(newUser);
+        mDatabase.child(mAuth.getUid()).setValue(newUser);
         Intent loginIntent = new Intent(this, Login.class);
         startActivity(loginIntent);
     }
