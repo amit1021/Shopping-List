@@ -10,7 +10,7 @@
         android:id="@+id/addList"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/button" />
+        android:text="הוסף רשימה" />
 
     <ListView
         android:id="@+id/listItems"

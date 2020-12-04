@@ -9,6 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ShopList">
+        <activity android:name=".displayShopListActivity"></activity>
+        <activity android:name=".myList" />
         <activity android:name=".ListActivity" />
         <activity android:name=".HomeActivity" />
         <activity android:name=".Register" />
