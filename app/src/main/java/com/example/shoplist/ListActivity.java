@@ -118,9 +118,12 @@ public class ListActivity extends AppCompatActivity {
                         //Update the list on the database
                         FirebaseDatabase.getInstance().getReference().child("user").child(firebaseAuth.getCurrentUser().getUid()).child("shopListUID").setValue(listUID);
                         System.out.println(listUID);
-                        //open activity displayShopListActivity
+                        //pess the shopListUID (keyId to the next activity
                         Intent displayShopList = new Intent(ListActivity.this, displayShopListActivity.class);
+                        displayShopList.putExtra("key",keyId);
+                        //open activity displayShopListActivity
                         startActivity(displayShopList);
+
                     }
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {   }
