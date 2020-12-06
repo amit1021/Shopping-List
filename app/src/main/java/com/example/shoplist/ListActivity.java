@@ -70,6 +70,7 @@ public class ListActivity extends AppCompatActivity {
 
         //add item to listView(show on the activity)
         listView = (ListView)findViewById(R.id.listItems);
+
         ArrayList<Item> items = new ArrayList<>();
         items.add(bannana);
         items.add(gvina);
@@ -117,7 +118,6 @@ public class ListActivity extends AppCompatActivity {
                         listUID.add(keyId);
                         //Update the list on the database
                         FirebaseDatabase.getInstance().getReference().child("user").child(firebaseAuth.getCurrentUser().getUid()).child("shopListUID").setValue(listUID);
-                        System.out.println(listUID);
                         //pess the shopListUID (keyId to the next activity
                         Intent displayShopList = new Intent(ListActivity.this, displayShopListActivity.class);
                         displayShopList.putExtra("key",keyId);
@@ -160,7 +160,6 @@ public class ListActivity extends AppCompatActivity {
                 Item i = new Item(itemName,quantityUser);
                 //add to the list shop
                 shop_list.add(i);
-                System.out.println(shop_list.toString());
                 //close the dialog
                 dialog.dismiss();
             }
