@@ -7,13 +7,6 @@
     android:layout_height="55dp"
     android:orientation="vertical">
 
-    <!--        android:ems="10"-->
-<!--        android:hint="כמות"-->
-<!--        android:inputType="textPersonName"-->
-<!--        android:textAlignment="viewEnd"-->
-<!--        android:textColor="#000000"-->
-<!--        tools:layout_editor_absoluteX="215dp"-->
-<!--        tools:layout_editor_absoluteY="292dp" />-->
 
     <EditText
         android:id="@+id/quantityText"
