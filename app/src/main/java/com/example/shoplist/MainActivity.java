@@ -78,6 +78,7 @@ public class MainActivity extends AppCompatActivity {
                 //close the dialog
                 dialog.dismiss();
                 Intent addListIntent = new Intent(MainActivity.this, AddListActivity.class);
+                addListIntent.putExtra("key",keyId);
                 startActivity(addListIntent);
             }
         });
