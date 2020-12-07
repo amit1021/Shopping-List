@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -33,6 +34,7 @@ public class HomeActivity extends AppCompatActivity {
     private Button addListButton;
     private Button okListButton;
     private EditText listName;
+    ListView listView;
 
     //Database object
     private FirebaseDatabase database;
@@ -43,21 +45,32 @@ public class HomeActivity extends AppCompatActivity {
     private String listNameString;
 
     private ArrayList<String> listUID;
+    private ArrayList<String> shoplistUID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        GoogleSignInAccount signInAccount = GoogleSignIn.getLastSignedInAccount(this);
-        if(signInAccount != null){
-            String name = signInAccount.getDisplayName();
-            String email = signInAccount.getEmail();
-        }
+
 
         database = FirebaseDatabase.getInstance();
         mDatabase = database.getReference("\"shopList\"");
 
-        addListButton = (Button)findViewById(R.id.addLists);
+        initShopListUID();
+        //createUserShopLists();
+
+        GoogleSignInAccount signInAccount = GoogleSignIn.getLastSignedInAccount(this);
+        if(signInAccount != null){
+            String name = signInAccount.getDisplayName();
+            String email = signInAccount.getEmail();
+
+            System.out.println("name.............................." + name + "........................" + email);
+        }
+
+
+        listView = (ListView)findViewById(R.id.myListView);
+        addListButton = (Button)findViewById(R.id.addList_button);
+
         addListButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -66,6 +79,41 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void initShopListUID() {
+
+
+    }
+
+//    private void createUserShopLists() {
+//
+//        firebaseAuth = FirebaseAuth.getInstance();
+//        String userUID = firebaseAuth.getCurrentUser().getUid();
+//        mCurrentUser = database.getReference().child("user").child(userUID);
+//
+//        mCurrentUser.addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                //take the list from the database
+//                User user = (User)snapshot.getValue(User.class);
+//                System.out.println("--------------------------------------------1111111" );
+//                listUID = user.getShopListUID();
+//                ArrayList<String> arr = mDatabase.child("shopList").getKey();
+//                for(int i = 0; i < listUID.size(); i++){
+//                    System.out.println("-------------------------------------------2222222");
+//                    for (String str : mDatabase.getKey()){
+//                        System.out.println("--------------------------------------------333333");
+//                        System.out.println("Snap--------------" + snap.getKey() + "--------------listUid----------" + listUID.get(i));
+//                        if(snap.getKey().equals(listUID.get(i))){
+//                            System.out.println("--------------------------------------------" + snap.getKey());
+//                        }
+//                    }
+//                }
+//            }
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {   }
+//        });
+//    }
 
 
     //build dialog for the customer press the quantity
@@ -95,22 +143,19 @@ public class HomeActivity extends AppCompatActivity {
 
                 System.out.println(mDatabase.toString());
 
-                firebaseAuth = FirebaseAuth.getInstance();
-                String userUID = firebaseAuth.getCurrentUser().getUid();
-                mCurrentUser = database.getReference().child("user").child(userUID);
-                System.out.println(mCurrentUser.toString());
+//                firebaseAuth = FirebaseAuth.getInstance();
+//                String userUID = firebaseAuth.getCurrentUser().getUid();
+//                mCurrentUser = database.getReference().child("user").child(userUID);
 
                 mCurrentUser.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         //take the list from the database
-//                        listUID = (ArrayList)snapshot.getValue();
                         User user = (User)snapshot.getValue(User.class);
                         listUID = user.getShopListUID();
+                        //add the key if the new list
                         listUID.add(keyId);
                         System.out.println("Email: " +  user.getEmail());
-                        //add the key if the new list
-//                        listUID.add(keyId);
                         //Update the list on the database
                         mCurrentUser.setValue(user);
                     }
@@ -128,26 +173,25 @@ public class HomeActivity extends AppCompatActivity {
     }
 
 
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_home, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.setting:
+
+
+            case R.id.logout:
+                FirebaseAuth.getInstance().signOut();
+                Intent intent = new Intent(getApplicationContext(), Login.class);
+                startActivity(intent);
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }
-
-
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        MenuInflater inflater = getMenuInflater();
-//        inflater.inflate(R.menu.menu_home, menu);
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-//        switch (item.getItemId()){
-//            case R.id.setting:
-//
-//
-//            case R.id.logout:
-//
-//
-//        }
-//        return super.onOptionsItemSelected(item);
-//    }
-//}

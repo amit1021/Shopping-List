@@ -44,7 +44,7 @@ public class Login extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         FirebaseUser user = googleAuth.getCurrentUser();
-        System.out.println("............................................................................................................................." + user.getDisplayName() + "      " + user.getEmail());
+//        System.out.println("............................................................................................................................." + user.getDisplayName() + "      " + user.getEmail());
         if(user != null){
             Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
             startActivity(intent);
@@ -182,10 +182,13 @@ public class Login extends AppCompatActivity {
 
                             System.out.println("...................................................................firebaseAuthWithGoogle...................................................................");
                             FirebaseUser user = googleAuth.getCurrentUser();
-                            Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
-                            startActivity(intent);
+                            Intent intToHome = new Intent(getApplicationContext(), HomeActivity.class);
+                            System.out.println("...................................................................firebaseAuthWithGoogle...................................................................");
+
+                            startActivity(intToHome);
                         } else {
                             // If sign in fails, display a message to the user.
+                            System.out.println("...................................................................Failed...................................................................");
                             Toast.makeText(Login.this, "Failed", Toast.LENGTH_SHORT).show();
                         }
 
