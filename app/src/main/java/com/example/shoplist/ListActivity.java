@@ -114,6 +114,7 @@ public class ListActivity extends AppCompatActivity {
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         //take the list from the database
                         listUID = (ArrayList)snapshot.child("user").child(firebaseAuth.getCurrentUser().getUid()).child("shopListUID").getValue();
+                        System.out.println("list!!!! : " + listUID);
                         //add the key if the new list
                         listUID.add(keyId);
                         //Update the list on the database

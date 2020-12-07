@@ -7,16 +7,17 @@ public class User {
     private String email;
     private String password;
     private String passwordAuth;
-    public ArrayList<String> shopListUID;
+    public ArrayList<String> shopListUID ;
 
-    public User(){}
+    public User(){
+        shopListUID = new ArrayList<>();
+    }
 
     public User(String user, String email, String password){
         this.user = user;
         this.email = email;
         this.password = password;
         shopListUID = new ArrayList<>();
-        shopListUID.add("amit the Queen");
     }
 
     public ArrayList<String> getShopListUID() {
@@ -43,6 +44,15 @@ public class User {
         return passwordAuth;
     }
 
+    public void setUser(String user) {
+        this.user = user;
+    }
 
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }

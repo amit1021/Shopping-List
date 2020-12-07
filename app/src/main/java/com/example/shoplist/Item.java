@@ -32,4 +32,8 @@ public class Item {
     public String toString(){
         return this.name + "    " + this.quantity;
     }
+
+    public boolean equal(Item item){
+        return (this.name.equals(item.name) && this.quantity == item.quantity);
+    }
 }

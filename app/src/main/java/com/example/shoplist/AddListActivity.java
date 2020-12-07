@@ -82,16 +82,19 @@ public class AddListActivity extends AppCompatActivity {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         ArrayList<Item> itemsToUpdate = new ArrayList<>();
+                        //get the arraylist of items to update
                         itemsToUpdate = snapshot.child(listId).getValue(ShopList.class).getItems();
+                        //find the item in the arraylist
                         for (int j = 0; j < itemsToUpdate.size(); j++){
-                            System.out.println("itemsToUpdate at index j: " + itemsToUpdate.get(j).getName() +  " " + itemsToUpdate.get(j).getQuantity() + "      Item Name: " + itemRemove.getName() + " " + itemRemove.getQuantity());
-                            if(itemsToUpdate.get(j).getName().toString() == itemRemove.getName().toString() &&
-                                itemsToUpdate.get(j).getQuantity() == itemRemove.getQuantity()){
-                                System.out.println("Item name: " + itemsToUpdate.get(j));
-                                itemsToUpdate.remove(j);
-                            }
+                            //check if the current item equal to the item we want to remove
+                                if(itemsToUpdate.get(j).equal(itemRemove)){
+                                    //remove from the arraylist
+                                    itemsToUpdate.remove(j);
+                                    //update the database
+                                    firebaseReference.child(listId).child("items").setValue(itemsToUpdate);
+                                    return;
+                                }
                         }
-//                        firebaseReference.child(listId).setValue(shopList);
                     }
 
 
@@ -108,16 +111,16 @@ public class AddListActivity extends AppCompatActivity {
         EditText input = findViewById(R.id.input);
         String itemText = input.getText().toString();
         EditText quantityItem = findViewById(R.id.quantityItems);
-        int quantity = Integer.parseInt(quantityItem.getText().toString());
-        Item item = new Item(itemText, quantity);
 
-
-
-        if(!itemText.equals("")){
+        String quan = quantityItem.getText().toString();
+        if(!itemText.equals("") && isLegal(quan)){
 //            if (items.contains(item.name)){
 //
 //
 //            }
+
+            int quantity = Integer.parseInt(quantityItem.getText().toString());
+            Item item = new Item(itemText, quantity);
 
             //add the item to the list
             itemsAdapter.add(item);
@@ -149,4 +152,17 @@ public class AddListActivity extends AppCompatActivity {
           Toast.makeText(getApplicationContext(), "Please enter text", Toast.LENGTH_LONG).show();
         }
     }
+
+    public static boolean isLegal(String str){
+        if(str == ""){
+            return false;
+        }
+        for (int i = 0; i < str.length(); i++){
+            if(str.charAt(i) > '9' || str.charAt(i) < '0'){
+                return false;
+            }
+        }
+        return true;
+    }
+
 }

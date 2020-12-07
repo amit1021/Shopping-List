@@ -1,4 +1,4 @@
 <resources>
-    <string name="app_name">com.example.shoplist.ShopList</string>
+    <string name="app_name">Shopping List</string>
     <string name="button">Button</string>
 </resources>
