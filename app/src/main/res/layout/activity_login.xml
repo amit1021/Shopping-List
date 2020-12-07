@@ -47,7 +47,7 @@
         android:fontFamily="@font/titan_one"
         android:hint="סיסמא"
         android:inputType="textPassword"
-        android:textAlignment="textEnd"
+        android:textAlignment="viewEnd"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
