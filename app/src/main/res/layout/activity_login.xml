@@ -107,4 +107,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.477" />
+
+    <Button
+        android:id="@+id/google_signIn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="Google"
+        app:layout_constraintTop_toBottomOf="@+id/registerBy"
+        tools:layout_editor_absoluteX="166dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>
