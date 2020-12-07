@@ -134,6 +134,8 @@ public class AddListActivity extends AppCompatActivity {
                     shopList.setItems(snapshot.child(listId).getValue(ShopList.class).getItems());
                     //get the list name from the snapshot and put in the new Shoplist object
                     shopList.setName(snapshot.child(listId).getValue(ShopList.class).getName());
+                    //get the list UID from the snapshot and put in the new Shoplist object
+                    shopList.setUID(snapshot.child(listId).getValue(ShopList.class).getUID());
                     //add the new item that the user add to the list
                     shopList.getItems().add(item);
                     //update the database with the new list
