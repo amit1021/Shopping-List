@@ -9,7 +9,12 @@ public class ShopList {
     private ArrayList <Item> items;
 
     public ShopList() {
-        ;
+        items = new ArrayList<>();
+    }
+
+    public ShopList(ShopList other){
+        this.name = other.name;
+        items = other.items;
     }
 
     public ShopList(String name) {
@@ -32,4 +37,5 @@ public class ShopList {
     public void setItems(ArrayList<Item> items) {
         this.items = items;
     }
+
 }

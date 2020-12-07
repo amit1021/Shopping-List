@@ -33,6 +33,8 @@ public class AddListActivity extends AppCompatActivity {
     private ListView listView;
     private Button button;
 
+    private String listId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,10 +44,12 @@ public class AddListActivity extends AppCompatActivity {
         button = findViewById(R.id.button);
 
         //take the uid of the list that the user made
-        String listId = getIntent().getStringExtra("key");
+//        String listId = getIntent().getStringExtra("key");
+       listId = getIntent().getStringExtra("key");
+
 
         firebaseDatabase = FirebaseDatabase.getInstance();
-        firebaseReference = firebaseDatabase.getReference("shopList").child(listId);
+        firebaseReference = firebaseDatabase.getReference("\"shopList\"");
 
 
         button.setOnClickListener(new View.OnClickListener(){
@@ -61,16 +65,40 @@ public class AddListActivity extends AppCompatActivity {
         setUpListViewListener();
     }
 
+    //remove item from the list
     private void setUpListViewListener() {
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Context context = getApplicationContext();
                 Toast.makeText(context, "Item Removed", Toast.LENGTH_LONG).show();
-
+                //the item we want to remove
+                Item itemRemove = items.get(i);
                 items.remove(i);
                 //refresh the list (the display list)
                 itemsAdapter.notifyDataSetChanged();
+                //remove the item from database
+                firebaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        ArrayList<Item> itemsToUpdate = new ArrayList<>();
+                        itemsToUpdate = snapshot.child(listId).getValue(ShopList.class).getItems();
+                        for (int j = 0; j < itemsToUpdate.size(); j++){
+                            System.out.println("itemsToUpdate at index j: " + itemsToUpdate.get(j).getName() +  " " + itemsToUpdate.get(j).getQuantity() + "      Item Name: " + itemRemove.getName() + " " + itemRemove.getQuantity());
+                            if(itemsToUpdate.get(j).getName().toString() == itemRemove.getName().toString() &&
+                                itemsToUpdate.get(j).getQuantity() == itemRemove.getQuantity()){
+                                System.out.println("Item name: " + itemsToUpdate.get(j));
+                                itemsToUpdate.remove(j);
+                            }
+                        }
+//                        firebaseReference.child(listId).setValue(shopList);
+                    }
+
+
+                    @Override
+                    public void onCancelled (@NonNull DatabaseError error){
+                    }
+                });
                 return true;
             }
         });
@@ -86,36 +114,34 @@ public class AddListActivity extends AppCompatActivity {
 
 
         if(!itemText.equals("")){
+//            if (items.contains(item.name)){
+//
+//
+//            }
+
+            //add the item to the list
             itemsAdapter.add(item);
 
-            ShopList shopList = new ShopList();
-
-            firebaseReference.addValueEventListener(new ValueEventListener() {
+            //add the item to database
+           firebaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-                    shopList =(ShopList) snapshot.getValue();
-                    listUID = (ArrayList)snapshot.child("user").child(firebaseAuth.getCurrentUser().getUid()).child("shopListUID").getValue();
-                    //add the key if the new list
-                    listUID.add(keyId);
-                    //Update the list on the database
-                    FirebaseDatabase.getInstance().getReference().child("user").child(firebaseAuth.getCurrentUser().getUid()).child("shopListUID").setValue(listUID);
-                    //pess the shopListUID (keyId to the next activity
-                    Intent displayShopList = new Intent(ListActivity.this, displayShopListActivity.class);
-                    displayShopList.putExtra("key",keyId);
-                    //open activity displayShopListActivity
-                    startActivity(displayShopList);
-
+                    ShopList shopList = new ShopList();
+                    //get the items arraylist from the snapshot and put in the new Shoplist object
+                    shopList.setItems(snapshot.child(listId).getValue(ShopList.class).getItems());
+                    //get the list name from the snapshot and put in the new Shoplist object
+                    shopList.setName(snapshot.child(listId).getValue(ShopList.class).getName());
+                    //add the new item that the user add to the list
+                    shopList.getItems().add(item);
+                    //update the database with the new list
+                    firebaseReference.child(listId).setValue(shopList);
                 }
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {   }
-            });
 
 
-
-
-
-
+                    @Override
+                    public void onCancelled (@NonNull DatabaseError error){
+                    }
+                });
 
             input.setText("");
             quantityItem.setText("");
