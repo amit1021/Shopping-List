@@ -112,8 +112,8 @@ public class AddListActivity extends AppCompatActivity {
         String itemText = input.getText().toString();
         EditText quantityItem = findViewById(R.id.quantityItems);
 
-        String quan = quantityItem.getText().toString();
-        if(!itemText.equals("") && isLegal(quan)){
+        String quantityText = quantityItem.getText().toString();
+        if(!itemText.equals("") && isLegal(quantityText)){
 //            if (items.contains(item.name)){
 //
 //
@@ -153,8 +153,9 @@ public class AddListActivity extends AppCompatActivity {
         }
     }
 
+    //check that the quantity isnt emnpy and contain only numbers
     public static boolean isLegal(String str){
-        if(str == ""){
+        if(str.equals("")){
             return false;
         }
         for (int i = 0; i < str.length(); i++){
