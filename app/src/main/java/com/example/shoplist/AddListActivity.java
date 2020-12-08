@@ -20,10 +20,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AddListActivity extends AppCompatActivity {
+public class AddListActivity extends AppCompatActivity  {
     private ArrayList<Item> items;
     private ArrayAdapter<Item> itemsAdapter;
 
@@ -45,7 +46,10 @@ public class AddListActivity extends AppCompatActivity {
 
         //take the uid of the list that the user made
 //        String listId = getIntent().getStringExtra("key");
-       listId = getIntent().getStringExtra("key");
+//       listId = getIntent().getStringExtra("key");
+
+        ShopList shop =(ShopList) getIntent().getSerializableExtra("key");
+        System.out.println(shop);
 
 
         firebaseDatabase = FirebaseDatabase.getInstance();
@@ -134,6 +138,8 @@ public class AddListActivity extends AppCompatActivity {
                     shopList.setItems(snapshot.child(listId).getValue(ShopList.class).getItems());
                     //get the list name from the snapshot and put in the new Shoplist object
                     shopList.setName(snapshot.child(listId).getValue(ShopList.class).getName());
+                    //get the list UID from the snapshot and put in the new Shoplist object
+                    shopList.setUID(snapshot.child(listId).getValue(ShopList.class).getUID());
                     //add the new item that the user add to the list
                     shopList.getItems().add(item);
                     //update the database with the new list
