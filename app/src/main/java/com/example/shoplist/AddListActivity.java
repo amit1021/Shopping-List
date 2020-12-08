@@ -65,11 +65,8 @@ public class AddListActivity extends AppCompatActivity {
         addPartButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                //add participants by email
                 openDialog();
-//                Intent intent = new Intent(AddListActivity.this, AddParticipants.class);
-//                intent.putExtra("listUid", listId);
-//                startActivity(intent);
             }
         });
         //initialization
@@ -115,8 +112,8 @@ public class AddListActivity extends AppCompatActivity {
         dialogBuilder = new AlertDialog.Builder(this);
         //the layout of the Dialog
         final View layoutPermission = getLayoutInflater().inflate(R.layout.dialog_permission, null);
-        //the button on th layout
 
+        //the button on th layout
         email = (EditText) layoutPermission.findViewById(R.id.editTextTextPersonName);
         editor = (Button) layoutPermission.findViewById(R.id.editor_button);
         reader = (Button) layoutPermission.findViewById(R.id.reader_button);
@@ -127,30 +124,30 @@ public class AddListActivity extends AppCompatActivity {
         dialog = dialogBuilder.create();
         dialog.show();
 
+        //set editor participants
         editor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String email_user = email.getText().toString();
                 AddParticipants addPart = new AddParticipants();
-                addPart.addParticipantToTheList(email_user, listId);
+                addPart.addParticipantToTheList(email_user, listId, "editor");
                 dialog.dismiss();
             }
         });
+        //set reader participants
         reader.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String email_user = email.getText().toString();
                 AddParticipants addPart = new AddParticipants();
-                addPart.addParticipantToTheList(email_user, listId);
+                addPart.addParticipantToTheList(email_user, listId , "reader");
                 dialog.dismiss();
             }
         });
+        //close windows
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String email_user = email.getText().toString();
-                AddParticipants addPart = new AddParticipants();
-                addPart.addParticipantToTheList(email_user, listId);
                 dialog.dismiss();
             }
         });

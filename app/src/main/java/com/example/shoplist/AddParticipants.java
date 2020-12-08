@@ -60,7 +60,7 @@ public class AddParticipants extends AppCompatActivity {
 //        });
     }
 
-    public void addParticipantToTheList(String email, String listId) {
+    public void addParticipantToTheList(String email, String listId, String type) {
 
         database = FirebaseDatabase.getInstance();
         mDatabase = database.getReference("user");
@@ -82,7 +82,7 @@ public class AddParticipants extends AppCompatActivity {
                         if (!currUser.getShopListUID().contains(listId)) {
                             currUser.getShopListUID().add(listId);
                             mDatabase.child(userUid).setValue(currUser);
-                            updateShopListPermission(email, userUid, listId);
+                            updateShopListPermission(email, userUid, listId, type);
 //                            Toast.makeText(AddParticipants.this, "The user added", Toast.LENGTH_LONG).show();
                         } else {
                             //the user is already exists in the list
@@ -107,14 +107,22 @@ public class AddParticipants extends AppCompatActivity {
 
     }
 
-    private void updateShopListPermission(String email, String userUid, String listId) {
+    private void updateShopListPermission(String email, String userUid, String listId, String type) {
         mShopListPointer.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 ShopList shopList = snapshot.child(listId).getValue(ShopList.class);
                 ArrayList<UserPermission> user_permission = shopList.getPermissions();
-                UserPermission userPer = new UserPermission(userUid, email, "Reader");
-                user_permission.add(userPer);
+                if(type.equals("reader")) {
+                    UserPermission userPer = new UserPermission(userUid, email, "Reader");
+                    user_permission.add(userPer);
+                    shopList.setPermissions(user_permission);
+
+                }else{
+                    UserPermission userPer = new UserPermission(userUid, email, "Editor");
+                    user_permission.add(userPer);
+                    shopList.setPermissions(user_permission);
+                }
                 shopList.setPermissions(user_permission);
                 mShopListPointer.child(listId).setValue(shopList);
             }
