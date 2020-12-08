@@ -32,6 +32,7 @@ public class Register extends AppCompatActivity {
     private static final String USER = "user";
     private static final String TAG = "Register";
     private User newUser;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,19 +48,24 @@ public class Register extends AppCompatActivity {
         mDatabase = database.getReference(USER);
         mAuth = FirebaseAuth.getInstance();
 
+        //register button
         registerButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
+                //take the values
                 String user = userName.getText().toString();
                 String email = userEmail.getText().toString();
                 String password = userPassword.getText().toString();
                 String passwordAuth = userAuthPassword.getText().toString();
+                //if one of the fields is empty, try again
                 if(TextUtils.isEmpty(user) || TextUtils.isEmpty(email) || TextUtils.isEmpty(password) || TextUtils.isEmpty(passwordAuth)){
                     Toast.makeText(getApplicationContext(), "Not valid",
                             Toast.LENGTH_LONG).show();
                     return;
                 }
+                //create new user
                 newUser = new User(user, email, password);
+                //add the user to database
                 registerUser(email, password);
             }
         });
@@ -88,9 +94,12 @@ public class Register extends AppCompatActivity {
     }
 
     public void updateUI(FirebaseUser currentUser){
+        //create UID to the user
         String keyId = mDatabase.push().getKey();
+        //add the user to the database
         mDatabase.child(mAuth.getUid()).setValue(newUser);
-        Intent loginIntent = new Intent(this, Login.class);
-        startActivity(loginIntent);
+        //go to home activity
+        Intent HomeIntent = new Intent(this, HomeActivity.class);
+        startActivity(HomeIntent);
     }
 }

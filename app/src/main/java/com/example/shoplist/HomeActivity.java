@@ -31,18 +31,21 @@ import com.google.firebase.database.ValueEventListener;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class HomeActivity extends AppCompatActivity  {
+public class HomeActivity extends AppCompatActivity {
 
     private AlertDialog.Builder dialogBuilder;
     private AlertDialog dialog;
 
     private Button addListButton;
     private Button okListButton;
+    private Button addParticipants;
+
     private EditText listName;
+    private EditText email_addParticipant;
     ListView listView;
     private ArrayAdapter<ShopList> shopAdapter;
 
-    private Intent addListIntent ;
+    private Intent addListIntent;
 
 
     //Database object
@@ -61,18 +64,18 @@ public class HomeActivity extends AppCompatActivity  {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-
-        addListIntent =  new Intent(HomeActivity.this, AddListActivity.class);
-
+        //add list intent
+        addListIntent = new Intent(HomeActivity.this, AddListActivity.class);
+        //initialization
         database = FirebaseDatabase.getInstance();
         mDatabase = database.getReference("\"shopList\"");
-
+        //init the list of user UID
         initlistUID();
 
         listView = (ListView) findViewById(R.id.myListView);
         addListButton = (Button) findViewById(R.id.addList_button);
 
-
+        //create the dialog to add new list
         addListButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -98,22 +101,20 @@ public class HomeActivity extends AppCompatActivity  {
         mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-                System.out.println("--------------------2222222222222");
                 //take the list from the database
                 for (DataSnapshot snap : snapshot.getChildren()) {
                     ShopList shop = (ShopList) snap.getValue(ShopList.class);
                     for (int i = 0; i < listUID.size(); i++) {
+                        //check if the user have the list
                         if (listUID.get(i) != null && listUID.get(i).equals(shop.getUID())) {
+                            //add the shop list to the list of the shop list that user own
                             Allshop_list.add(shop);
-                            System.out.println("---------------------" + shop);
                         }
 
                     }
                 }
                 setAdapter();
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
             }
@@ -122,6 +123,7 @@ public class HomeActivity extends AppCompatActivity  {
     }
 
     private void initlistUID() {
+
         firebaseAuth = FirebaseAuth.getInstance();
         String userUID = firebaseAuth.getCurrentUser().getUid();
         mCurrentUser = database.getReference().child("user").child(userUID);
@@ -131,28 +133,28 @@ public class HomeActivity extends AppCompatActivity  {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 //take the list from the database
                 User user = (User) snapshot.getValue(User.class);
-                System.out.println("--------------------------------------------1111111");
                 listUID = user.getShopListUID();
-                System.out.println(listUID);
                 initShopListUID();
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
             }
         });
     }
 
-    private void setAdapter(){
+    //display all the list of the user
+    private void setAdapter() {
         shopAdapter = new ArrayAdapter<ShopList>(this, R.layout.row, Allshop_list);
         listView.setAdapter(shopAdapter);
-        System.out.println("-----------------Adapter");
+        //if press on one of the list, open the list.
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             //when the customer press on the item
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
-                addListIntent.putExtra("key", Allshop_list.get(i));
+                //pass the UID to addListActivity, to show and edit the list in the activity
+                addListIntent.putExtra("key", Allshop_list.get(i).getUID());
+                // to know which activity pass the UID
+                addListIntent.putExtra("activity", "HomeActivity");
                 startActivity(addListIntent);
             }
         });
@@ -185,11 +187,12 @@ public class HomeActivity extends AppCompatActivity  {
                 mDatabase.child(keyId).setValue(shopList);
 
                 System.out.println(mDatabase.toString());
-
+                //initialization
                 firebaseAuth = FirebaseAuth.getInstance();
                 String userUID = firebaseAuth.getCurrentUser().getUid();
                 mCurrentUser = database.getReference().child("user").child(userUID);
 
+                //update the shop list UID of the user
                 mCurrentUser.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -198,7 +201,6 @@ public class HomeActivity extends AppCompatActivity  {
                         listUID = user.getShopListUID();
                         //add the key if the new list
                         listUID.add(keyId);
-                        System.out.println("Email: " + user.getEmail());
                         //Update the list on the database
                         mCurrentUser.setValue(user);
                     }
@@ -210,7 +212,6 @@ public class HomeActivity extends AppCompatActivity  {
 
                 //close the dialog
                 dialog.dismiss();
-//                Intent addListIntent = new Intent(HomeActivity.this, AddListActivity.class);
                 addListIntent.putExtra("key", keyId);
                 startActivity(addListIntent);
             }
@@ -218,13 +219,14 @@ public class HomeActivity extends AppCompatActivity  {
     }
 
 
+    //the menu on the activity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_home, menu);
         return true;
     }
-
+    //the option on the menu
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {

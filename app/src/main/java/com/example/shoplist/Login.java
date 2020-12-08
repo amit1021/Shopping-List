@@ -45,7 +45,7 @@ public class Login extends AppCompatActivity {
         super.onStart();
         FirebaseUser user = googleAuth.getCurrentUser();
 //        System.out.println("............................................................................................................................." + user.getDisplayName() + "      " + user.getEmail());
-        if(user != null){
+        if (user != null) {
             Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
             startActivity(intent);
         }
@@ -60,18 +60,16 @@ public class Login extends AppCompatActivity {
 
         createRequest();
 
-        findViewById(R.id.google_signIn).setOnClickListener(new View.OnClickListener(){
+        findViewById(R.id.google_signIn).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view){
+            public void onClick(View view) {
                 signIn();
             }
         });
 
 
-
-
         //register button
-        buttonRegister = (Button)findViewById(R.id.loginRegister);
+        buttonRegister = (Button) findViewById(R.id.loginRegister);
         buttonRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -89,7 +87,7 @@ public class Login extends AppCompatActivity {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser mFirebaseUser = mAuth.getCurrentUser();
-                if(mFirebaseUser != null){
+                if (mFirebaseUser != null) {
                     Toast.makeText(Login.this, "You are logged in", Toast.LENGTH_SHORT).show();
                     Intent home = new Intent(Login.this, HomeActivity.class);
                     startActivity(home);
@@ -99,39 +97,35 @@ public class Login extends AppCompatActivity {
             }
         };
 
-        buttonLogin.setOnClickListener(new View.OnClickListener(){
+        buttonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
+            public void onClick(View v) {
                 String emailUser = email.getText().toString();
                 String passwordUser = password.getText().toString();
                 if (emailUser.isEmpty()) {
                     email.setError("Please Enter Email Id");
                     email.requestFocus();
-                }
-                else if (passwordUser.isEmpty()) {
+                } else if (passwordUser.isEmpty()) {
                     password.setError("Please Enter Password Id");
                     password.requestFocus();
-                }
-                else if (emailUser.isEmpty() && passwordUser.isEmpty()){
+                } else if (emailUser.isEmpty() && passwordUser.isEmpty()) {
                     Toast.makeText(Login.this, "Fileds are empty", Toast.LENGTH_SHORT).show();
                 } else if (!(emailUser.isEmpty() && passwordUser.isEmpty())) {
                     mAuth.signInWithEmailAndPassword(emailUser, passwordUser).addOnCompleteListener(Login.this, new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
-                            if(!task.isSuccessful()){
+                            if (!task.isSuccessful()) {
                                 Toast.makeText(Login.this, "Login Error, Please Login Again", Toast.LENGTH_SHORT).show();
-                            }
-                            else{
+                            } else {
                                 Intent intToHome = new Intent(Login.this, HomeActivity.class);
                                 startActivity(intToHome);
                             }
                         }
                     });
+                } else {
+                    Toast.makeText(Login.this, "Error", Toast.LENGTH_SHORT).show();
                 }
-                else{
-                    Toast.makeText(Login.this,"Error", Toast.LENGTH_SHORT).show();
-                }
-                }
+            }
         });
 
     }
@@ -165,7 +159,7 @@ public class Login extends AppCompatActivity {
                 firebaseAuthWithGoogle(account.getIdToken());
             } catch (ApiException e) {
                 // Google Sign In failed, update UI appropriately
-                Toast.makeText(this,e.getMessage(),Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
                 // ...
             }
         }
@@ -197,7 +191,7 @@ public class Login extends AppCompatActivity {
                 });
     }
 
-    public void openRegister(){
+    public void openRegister() {
         Intent intent = new Intent(this, Register.class);
         startActivity(intent);
     }
