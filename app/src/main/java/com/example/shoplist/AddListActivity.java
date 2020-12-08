@@ -1,8 +1,10 @@
 package com.example.shoplist;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -38,6 +40,13 @@ public class AddListActivity extends AppCompatActivity {
     private Button button;
     private Button addPartButton;
 
+    //dialog add participants
+    private AlertDialog.Builder dialogBuilder;
+    private AlertDialog dialog;
+    private EditText email;
+    private Button editor;
+    private Button reader;
+    private Button cancel;
 
     private String listId;
 
@@ -56,10 +65,11 @@ public class AddListActivity extends AppCompatActivity {
         addPartButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //String addParticipantEmail = email_addParticipant.getText().toString();
-                Intent intent = new Intent(AddListActivity.this, AddParticipants.class);
-                intent.putExtra("listUid", listId);
-                startActivity(intent);
+
+                openDialog();
+//                Intent intent = new Intent(AddListActivity.this, AddParticipants.class);
+//                intent.putExtra("listUid", listId);
+//                startActivity(intent);
             }
         });
         //initialization
@@ -81,6 +91,7 @@ public class AddListActivity extends AppCompatActivity {
                     items = itemToSet;
                     setListner();
                 }
+
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
                 }
@@ -97,6 +108,53 @@ public class AddListActivity extends AppCompatActivity {
                 addItem(view);
             }
         });
+    }
+
+    private void openDialog() {
+        //dialog
+        dialogBuilder = new AlertDialog.Builder(this);
+        //the layout of the Dialog
+        final View layoutPermission = getLayoutInflater().inflate(R.layout.dialog_permission, null);
+        //the button on th layout
+
+        email = (EditText) layoutPermission.findViewById(R.id.editTextTextPersonName);
+        editor = (Button) layoutPermission.findViewById(R.id.editor_button);
+        reader = (Button) layoutPermission.findViewById(R.id.reader_button);
+        cancel = (Button) layoutPermission.findViewById(R.id.cancel_button);
+
+        //show the dialog
+        dialogBuilder.setView(layoutPermission);
+        dialog = dialogBuilder.create();
+        dialog.show();
+
+        editor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String email_user = email.getText().toString();
+                AddParticipants addPart = new AddParticipants();
+                addPart.addParticipantToTheList(email_user, listId);
+                dialog.dismiss();
+            }
+        });
+        reader.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String email_user = email.getText().toString();
+                AddParticipants addPart = new AddParticipants();
+                addPart.addParticipantToTheList(email_user, listId);
+                dialog.dismiss();
+            }
+        });
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String email_user = email.getText().toString();
+                AddParticipants addPart = new AddParticipants();
+                addPart.addParticipantToTheList(email_user, listId);
+                dialog.dismiss();
+            }
+        });
+
     }
 
     //set the Adapter to display the list
@@ -137,6 +195,7 @@ public class AddListActivity extends AppCompatActivity {
                             }
                         }
                     }
+
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
                     }
@@ -193,6 +252,7 @@ public class AddListActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Please enter text", Toast.LENGTH_LONG).show();
         }
     }
+
     //check that the quantity isnt emnpy and contain only numbers
     public static boolean isLegal(String str) {
         if (str.equals("")) {

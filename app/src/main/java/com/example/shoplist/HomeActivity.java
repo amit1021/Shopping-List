@@ -29,6 +29,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.io.Serializable;
+import java.security.Permission;
 import java.util.ArrayList;
 
 public class HomeActivity extends AppCompatActivity {
@@ -115,6 +116,7 @@ public class HomeActivity extends AppCompatActivity {
                 }
                 setAdapter();
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
             }
@@ -136,6 +138,7 @@ public class HomeActivity extends AppCompatActivity {
                 listUID = user.getShopListUID();
                 initShopListUID();
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
             }
@@ -176,15 +179,13 @@ public class HomeActivity extends AppCompatActivity {
         dialog = dialogBuilder.create();
         dialog.show();
 
-        //Ok button
+        //Ok button -> create the new list
         okListButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 listNameString = listName.getText().toString();
                 String keyId = mDatabase.push().getKey();
-                ShopList shopList = new ShopList(listNameString, keyId);
-                //push the list to the database
-                mDatabase.child(keyId).setValue(shopList);
+
 
                 System.out.println(mDatabase.toString());
                 //initialization
@@ -203,6 +204,14 @@ public class HomeActivity extends AppCompatActivity {
                         listUID.add(keyId);
                         //Update the list on the database
                         mCurrentUser.setValue(user);
+                        //create user permission as "Editor"
+                        UserPermission userPermission = new UserPermission(userUID, user.getEmail(), "Editor");
+                        //create object shoplist
+                        ShopList shopList = new ShopList(listNameString, keyId);
+                        //add the user permission to shoplist object
+                        shopList.getPermissions().add(userPermission);
+                        //push the list to the database
+                        mDatabase.child(keyId).setValue(shopList);
                     }
 
                     @Override
@@ -226,6 +235,7 @@ public class HomeActivity extends AppCompatActivity {
         inflater.inflate(R.menu.menu_home, menu);
         return true;
     }
+
     //the option on the menu
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
