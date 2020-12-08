@@ -1,15 +1,18 @@
 package com.example.shoplist;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -25,9 +28,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class HomeActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity  {
 
     private AlertDialog.Builder dialogBuilder;
     private AlertDialog dialog;
@@ -37,6 +41,9 @@ public class HomeActivity extends AppCompatActivity {
     private EditText listName;
     ListView listView;
     private ArrayAdapter<ShopList> shopAdapter;
+
+    private Intent addListIntent ;
+
 
     //Database object
     private FirebaseDatabase database;
@@ -55,6 +62,7 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        addListIntent =  new Intent(HomeActivity.this, AddListActivity.class);
 
         database = FirebaseDatabase.getInstance();
         mDatabase = database.getReference("\"shopList\"");
@@ -136,19 +144,18 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void setAdapter(){
-        shopAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, Allshop_list);
+        shopAdapter = new ArrayAdapter<ShopList>(this, R.layout.row, Allshop_list);
         listView.setAdapter(shopAdapter);
         System.out.println("-----------------Adapter");
-
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             //when the customer press on the item
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
+                addListIntent.putExtra("key", Allshop_list.get(i));
+                startActivity(addListIntent);
             }
         });
-
-
     }
 
 
@@ -203,7 +210,7 @@ public class HomeActivity extends AppCompatActivity {
 
                 //close the dialog
                 dialog.dismiss();
-                Intent addListIntent = new Intent(HomeActivity.this, AddListActivity.class);
+//                Intent addListIntent = new Intent(HomeActivity.this, AddListActivity.class);
                 addListIntent.putExtra("key", keyId);
                 startActivity(addListIntent);
             }

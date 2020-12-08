@@ -20,10 +20,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AddListActivity extends AppCompatActivity {
+public class AddListActivity extends AppCompatActivity  {
     private ArrayList<Item> items;
     private ArrayAdapter<Item> itemsAdapter;
 
@@ -45,7 +46,10 @@ public class AddListActivity extends AppCompatActivity {
 
         //take the uid of the list that the user made
 //        String listId = getIntent().getStringExtra("key");
-       listId = getIntent().getStringExtra("key");
+//       listId = getIntent().getStringExtra("key");
+
+        ShopList shop =(ShopList) getIntent().getSerializableExtra("key");
+        System.out.println(shop);
 
 
         firebaseDatabase = FirebaseDatabase.getInstance();

@@ -4,9 +4,10 @@ import android.provider.Contacts;
 
 import com.example.shoplist.Item;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class ShopList {
+public class ShopList  {
     private String name;
     private String UID;
     private ArrayList <Item> items;
@@ -57,6 +58,6 @@ public class ShopList {
     }
 
     public String toString(){
-        return "name: " + this.name + "    UID:  " + this.UID;
+        return "  " + this.name;
     }
 }
