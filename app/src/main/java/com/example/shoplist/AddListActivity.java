@@ -152,7 +152,7 @@ public class AddListActivity extends AppCompatActivity {
 
     //set the Adapter to display the list
     public void setListner() {
-        itemsAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, items);
+        itemsAdapter = new ArrayAdapter<>(this, R.layout.row, items);
         listView.setAdapter(itemsAdapter);
         setUpListViewListener();
     }

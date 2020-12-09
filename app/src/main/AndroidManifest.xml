@@ -14,7 +14,6 @@
         <activity android:name=".AddParticipants" />
         <activity android:name=".AddListActivity" />
         <activity android:name=".displayShopListActivity" />
-        <activity android:name=".myList" />
         <activity android:name=".ListActivity" />
         <activity android:name=".HomeActivity" />
         <activity android:name=".Register" />
