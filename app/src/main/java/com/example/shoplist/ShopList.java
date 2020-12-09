@@ -5,32 +5,38 @@ import android.provider.Contacts;
 import com.example.shoplist.Item;
 
 import java.io.Serializable;
+import java.security.Permission;
 import java.util.ArrayList;
 
-public class ShopList  {
+public class ShopList {
     private String name;
     private String UID;
-    private ArrayList <Item> items;
+    private ArrayList<Item> items;
+    private ArrayList<UserPermission> permissions;
 
     public ShopList() {
         items = new ArrayList<>();
+        permissions = new ArrayList<>();
     }
 
-    public ShopList(ShopList other){
+    public ShopList(ShopList other) {
         this.name = other.name;
-        items = other.items;
+        this.items = other.items;
         this.UID = other.UID;
+        this.permissions = other.permissions;
     }
 
     public ShopList(String name) {
         this.name = name;
-        items = new ArrayList<>();
+        this.items = new ArrayList<>();
+        this.permissions = new ArrayList<>();
     }
 
     public ShopList(String name, String UID) {
         this.name = name;
         this.UID = UID;
-        items = new ArrayList<>();
+        this.items = new ArrayList<>();
+        this.permissions = new ArrayList<>();
     }
 
     public String getName() {
@@ -57,7 +63,15 @@ public class ShopList  {
         this.UID = UID;
     }
 
-    public String toString(){
+    public ArrayList<UserPermission> getPermissions() {
+        return permissions;
+    }
+
+    public void setPermissions(ArrayList<UserPermission> permissions) {
+        this.permissions = permissions;
+    }
+
+    public String toString() {
         return "  " + this.name;
     }
 }

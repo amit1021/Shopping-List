@@ -1,8 +1,10 @@
 package com.example.shoplist;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,18 +23,30 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.io.Serializable;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AddListActivity extends AppCompatActivity  {
+public class AddListActivity extends AppCompatActivity {
     private ArrayList<Item> items;
     private ArrayAdapter<Item> itemsAdapter;
 
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference firebaseReference;
+    private DatabaseReference mDatabasePullList;
+
 
     private ListView listView;
     private Button button;
+    private Button addPartButton;
+
+    //dialog add participants
+    private AlertDialog.Builder dialogBuilder;
+    private AlertDialog dialog;
+    private EditText email;
+    private Button editor;
+    private Button reader;
+    private Button cancel;
 
     private String listId;
 
@@ -43,27 +57,105 @@ public class AddListActivity extends AppCompatActivity  {
 
         listView = findViewById(R.id.listView);
         button = findViewById(R.id.button);
+        addPartButton = findViewById(R.id.addPart_button);
 
         //take the uid of the list that the user made
-//        String listId = getIntent().getStringExtra("key");
-//       listId = getIntent().getStringExtra("key");
+        listId = getIntent().getStringExtra("key");
 
-        ShopList shop =(ShopList) getIntent().getSerializableExtra("key");
-        System.out.println(shop);
-
-
+        addPartButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //add participants by email
+                openDialog();
+            }
+        });
+        //initialization
         firebaseDatabase = FirebaseDatabase.getInstance();
         firebaseReference = firebaseDatabase.getReference("\"shopList\"");
+        mDatabasePullList = firebaseDatabase.getReference("\"shopList\"");
 
+        //take the uid of the list that the user made
+        String whichActivity = getIntent().getStringExtra("activity");
+        //if the whichActivity equals to HomeActivity' we came from home activity and the list is already exist
+        if (whichActivity != null && whichActivity.equals("HomeActivity")) {
+            firebaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    ArrayList<Item> itemToSet = new ArrayList<>();
+                    //get the arraylist of items to update
+                    itemToSet = snapshot.child(listId).getValue(ShopList.class).getItems();
+                    //ser the itemList to item to set
+                    items = itemToSet;
+                    setListner();
+                }
 
-        button.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                }
+            });
+        } else {
+            //we want to add a new list
+            items = new ArrayList<>();
+            setListner();
+        }
+        //add item button
+        button.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view){
+            public void onClick(View view) {
                 addItem(view);
             }
         });
+    }
 
-        items = new ArrayList<>();
+    private void openDialog() {
+        //dialog
+        dialogBuilder = new AlertDialog.Builder(this);
+        //the layout of the Dialog
+        final View layoutPermission = getLayoutInflater().inflate(R.layout.dialog_permission, null);
+
+        //the button on th layout
+        email = (EditText) layoutPermission.findViewById(R.id.editTextTextPersonName);
+        editor = (Button) layoutPermission.findViewById(R.id.editor_button);
+        reader = (Button) layoutPermission.findViewById(R.id.reader_button);
+        cancel = (Button) layoutPermission.findViewById(R.id.cancel_button);
+
+        //show the dialog
+        dialogBuilder.setView(layoutPermission);
+        dialog = dialogBuilder.create();
+        dialog.show();
+
+        //set editor participants
+        editor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String email_user = email.getText().toString();
+                AddParticipants addPart = new AddParticipants();
+                addPart.addParticipantToTheList(email_user, listId, "editor");
+                dialog.dismiss();
+            }
+        });
+        //set reader participants
+        reader.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String email_user = email.getText().toString();
+                AddParticipants addPart = new AddParticipants();
+                addPart.addParticipantToTheList(email_user, listId , "reader");
+                dialog.dismiss();
+            }
+        });
+        //close windows
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+    }
+
+    //set the Adapter to display the list
+    public void setListner() {
         itemsAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, items);
         listView.setAdapter(itemsAdapter);
         setUpListViewListener();
@@ -89,21 +181,20 @@ public class AddListActivity extends AppCompatActivity  {
                         //get the arraylist of items to update
                         itemsToUpdate = snapshot.child(listId).getValue(ShopList.class).getItems();
                         //find the item in the arraylist
-                        for (int j = 0; j < itemsToUpdate.size(); j++){
+                        for (int j = 0; j < itemsToUpdate.size(); j++) {
                             //check if the current item equal to the item we want to remove
-                                if(itemsToUpdate.get(j).equal(itemRemove)){
-                                    //remove from the arraylist
-                                    itemsToUpdate.remove(j);
-                                    //update the database
-                                    firebaseReference.child(listId).child("items").setValue(itemsToUpdate);
-                                    return;
-                                }
+                            if (itemsToUpdate.get(j).equal(itemRemove)) {
+                                //remove from the arraylist
+                                itemsToUpdate.remove(j);
+                                //update the database
+                                firebaseReference.child(listId).child("items").setValue(itemsToUpdate);
+                                return;
+                            }
                         }
                     }
 
-
                     @Override
-                    public void onCancelled (@NonNull DatabaseError error){
+                    public void onCancelled(@NonNull DatabaseError error) {
                     }
                 });
                 return true;
@@ -111,18 +202,18 @@ public class AddListActivity extends AppCompatActivity  {
         });
     }
 
-    private void addItem(View view){
+    private void addItem(View view) {
+        //take the values from the user
         EditText input = findViewById(R.id.input);
         String itemText = input.getText().toString();
         EditText quantityItem = findViewById(R.id.quantityItems);
 
         String quantityText = quantityItem.getText().toString();
-        if(!itemText.equals("") && isLegal(quantityText)){
+        if (!itemText.equals("") && isLegal(quantityText)) {
 //            if (items.contains(item.name)){
 //
 //
 //            }
-
             int quantity = Integer.parseInt(quantityItem.getText().toString());
             Item item = new Item(itemText, quantity);
 
@@ -130,7 +221,7 @@ public class AddListActivity extends AppCompatActivity  {
             itemsAdapter.add(item);
 
             //add the item to database
-           firebaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            firebaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     ShopList shopList = new ShopList();
@@ -147,29 +238,28 @@ public class AddListActivity extends AppCompatActivity  {
                 }
 
 
-                    @Override
-                    public void onCancelled (@NonNull DatabaseError error){
-                    }
-                });
-
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                }
+            });
+            //clear the input and quantityItem taxtView
             input.setText("");
             quantityItem.setText("");
         } else {
-          Toast.makeText(getApplicationContext(), "Please enter text", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Please enter text", Toast.LENGTH_LONG).show();
         }
     }
 
     //check that the quantity isnt emnpy and contain only numbers
-    public static boolean isLegal(String str){
-        if(str.equals("")){
+    public static boolean isLegal(String str) {
+        if (str.equals("")) {
             return false;
         }
-        for (int i = 0; i < str.length(); i++){
-            if(str.charAt(i) > '9' || str.charAt(i) < '0'){
+        for (int i = 0; i < str.length(); i++) {
+            if (str.charAt(i) > '9' || str.charAt(i) < '0') {
                 return false;
             }
         }
         return true;
     }
-
 }
