@@ -19,7 +19,8 @@
                 android:visible="false" />
 
             <item android:id="@+id/logout"
-                android:title="התנתק"/>
+                android:title="התנתק"
+                app:showAsAction="never"/>
 
         </menu>
     </item>

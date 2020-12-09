@@ -279,9 +279,13 @@ public class AddListActivity extends AppCompatActivity {
         }
 
         //if the user press on add participants button
-        if (item.getTitle().equals("הוסף משתתפים")) {
+        if (item.getTitle().equals("הוסף")) {
             openDialog();
-
+        }
+        if(item.getTitle().equals("הצג")){
+            Intent intent = new Intent(AddListActivity.this, FreindsInTheListActivity.class);
+            intent.putExtra("listId", listId);
+            startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
     }

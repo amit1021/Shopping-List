@@ -3,8 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/display_participants"
+        android:title="הצג"
+        app:showAsAction="ifRoom" />
+
+    <item
         android:id="@+id/add_participants_menu"
-        android:title="הוסף משתתפים"
+        android:title="הוסף"
         app:showAsAction="ifRoom" />
 
     <item
