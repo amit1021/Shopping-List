@@ -8,6 +8,9 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -57,18 +60,11 @@ public class AddListActivity extends AppCompatActivity {
 
         listView = findViewById(R.id.listView);
         button = findViewById(R.id.button);
-        addPartButton = findViewById(R.id.addPart_button);
 
         //take the uid of the list that the user made
         listId = getIntent().getStringExtra("key");
 
-        addPartButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //add participants by email
-                openDialog();
-            }
-        });
+
         //initialization
         firebaseDatabase = FirebaseDatabase.getInstance();
         firebaseReference = firebaseDatabase.getReference("\"shopList\"");
@@ -140,7 +136,7 @@ public class AddListActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String email_user = email.getText().toString();
                 AddParticipants addPart = new AddParticipants();
-                addPart.addParticipantToTheList(email_user, listId , "reader");
+                addPart.addParticipantToTheList(email_user, listId, "reader");
                 dialog.dismiss();
             }
         });
@@ -231,6 +227,8 @@ public class AddListActivity extends AppCompatActivity {
                     shopList.setName(snapshot.child(listId).getValue(ShopList.class).getName());
                     //get the list UID from the snapshot and put in the new Shoplist object
                     shopList.setUID(snapshot.child(listId).getValue(ShopList.class).getUID());
+                    //get the Permission list from the snapshot and put in the new Shoplist object
+                    shopList.setPermissions(snapshot.child(listId).getValue(ShopList.class).getPermissions());
                     //add the new item that the user add to the list
                     shopList.getItems().add(item);
                     //update the database with the new list
@@ -261,5 +259,30 @@ public class AddListActivity extends AppCompatActivity {
             }
         }
         return true;
+    }
+
+    //return to the previous page
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_add_list, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        //if the user press on return to the previous button
+        if (item.getTitle().equals("return")) {
+            Intent intent = new Intent(AddListActivity.this, HomeActivity.class);
+            startActivity(intent);
+        }
+
+        //if the user press on add participants button
+        if (item.getTitle().equals("הוסף משתתפים")) {
+            openDialog();
+
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
