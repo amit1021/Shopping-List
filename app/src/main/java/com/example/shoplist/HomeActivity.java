@@ -116,7 +116,6 @@ public class HomeActivity extends AppCompatActivity {
                 }
                 setAdapter();
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
             }
@@ -125,7 +124,6 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void initlistUID() {
-
         firebaseAuth = FirebaseAuth.getInstance();
         String userUID = firebaseAuth.getCurrentUser().getUid();
         mCurrentUser = database.getReference().child("user").child(userUID);
@@ -154,11 +152,46 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             //when the customer press on the item
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                whichActivity(Allshop_list.get(i).getUID());
                 //pass the UID to addListActivity, to show and edit the list in the activity
-                addListIntent.putExtra("key", Allshop_list.get(i).getUID());
-                // to know which activity pass the UID
-                addListIntent.putExtra("activity", "HomeActivity");
-                startActivity(addListIntent);
+//                addListIntent.putExtra("key", Allshop_list.get(i).getUID());
+//
+//                // to know which activity pass the UID
+//                addListIntent.putExtra("activity", "HomeActivity");
+//                startActivity(addListIntent);
+            }
+        });
+    }
+
+    private void whichActivity(String listUid) {
+
+        firebaseAuth = FirebaseAuth.getInstance();
+        String userUID = firebaseAuth.getCurrentUser().getUid();
+
+        mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                //take the list from the database
+                ArrayList<UserPermission> permissions = (ArrayList<UserPermission>) snapshot.child(listUid).getValue(ShopList.class).getPermissions();
+                for(UserPermission per : permissions)
+                    if(per.getUserUid().equals(userUID)){
+                        if(per.getRole().equals("Editor")){
+                            addListIntent.putExtra("key", listUid);
+                            // to know which activity pass the UID
+                            addListIntent.putExtra("activity", "HomeActivity");
+                            startActivity(addListIntent);
+                        }else{
+                            Intent DisplayShopToRead = new Intent(HomeActivity.this, DisplayShopToRead.class);
+                            DisplayShopToRead.putExtra("key", listUid);
+                            startActivity(DisplayShopToRead);
+
+                        }
+                    }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
             }
         });
     }
