@@ -19,6 +19,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -37,6 +38,12 @@ public class AddListActivity extends AppCompatActivity {
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference firebaseReference;
     private DatabaseReference mDatabasePullList;
+
+    //Add Database object
+    private FirebaseDatabase Friend_database;
+    private DatabaseReference Friend_mDatabase;
+    private DatabaseReference Friend_mShopListPointer;
+    private FirebaseAuth Friend_firebaseAuth;
 
 
     private ListView listView;
@@ -73,7 +80,7 @@ public class AddListActivity extends AppCompatActivity {
         //take the uid of the list that the user made
         String whichActivity = getIntent().getStringExtra("activity");
         //if the whichActivity equals to HomeActivity' we came from home activity and the list is already exist
-        if (whichActivity != null && whichActivity.equals("HomeActivity")) {
+        if (whichActivity != null && (whichActivity.equals("HomeActivity") || whichActivity.equals("display"))) {
             firebaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -125,8 +132,7 @@ public class AddListActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String email_user = email.getText().toString();
-                AddParticipants addPart = new AddParticipants();
-                addPart.addParticipantToTheList(email_user, listId, "editor");
+                addParticipantToTheList(email_user, listId, "editor");
                 dialog.dismiss();
             }
         });
@@ -135,8 +141,7 @@ public class AddListActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String email_user = email.getText().toString();
-                AddParticipants addPart = new AddParticipants();
-                addPart.addParticipantToTheList(email_user, listId, "reader");
+                addParticipantToTheList(email_user, listId, "reader");
                 dialog.dismiss();
             }
         });
@@ -289,4 +294,83 @@ public class AddListActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+
+    public void addParticipantToTheList (String email, String listId, String type) {
+
+        Friend_database = FirebaseDatabase.getInstance();
+        Friend_mDatabase = Friend_database.getReference("user");
+        Friend_firebaseAuth = FirebaseAuth.getInstance();
+        Friend_mShopListPointer = Friend_database.getReference("\"shopList\"");
+
+        Friend_mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String userUid = "";
+                //take the list from the database
+                for (DataSnapshot snap : snapshot.getChildren()) {
+                    User currUser = snap.getValue(User.class);
+                    //check if exists user with this email
+                    if (currUser.getEmail().equals(email)) {
+                        //get the userID of the user
+                        userUid = snap.getKey();
+                        //if this user doesnt exists in the specific list -> add his userID to the shoplist
+                        if (!currUser.getShopListUID().contains(listId)) {
+                            currUser.getShopListUID().add(listId);
+                            Friend_mDatabase.child(userUid).setValue(currUser);
+                            updateShopListPermission(email, userUid, listId, type);
+//                            Toast.makeText(AddParticipants.this, "The user added", Toast.LENGTH_LONG).show();
+                        } else {
+                            //the user is already exists in the list
+                             Toast.makeText(AddListActivity.this, "The user already exists", Toast.LENGTH_LONG).show();
+                            return;
+                        }
+                        //go back to the previous intent
+//                        Intent intent = new Intent(AddParticipants.this, AddListActivity.class);
+//                        startActivity(intent);
+                    }
+                }
+                //the email is invalid (doesnt exists in users)
+                if (userUid.isEmpty()) {
+                    Toast.makeText(AddListActivity.this, "The user doesnt exists", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+    }
+
+    private void updateShopListPermission(String email, String userUid, String listId, String type) {
+        Friend_mShopListPointer.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                ShopList shopList = snapshot.child(listId).getValue(ShopList.class);
+                ArrayList<UserPermission> user_permission = shopList.getPermissions();
+                if(type.equals("reader")) {
+                    UserPermission userPer = new UserPermission(userUid, email, "Reader");
+                    user_permission.add(userPer);
+                    shopList.setPermissions(user_permission);
+
+                }else{
+                    UserPermission userPer = new UserPermission(userUid, email, "Editor");
+                    user_permission.add(userPer);
+                    shopList.setPermissions(user_permission);
+                }
+                shopList.setPermissions(user_permission);
+                Friend_mShopListPointer.child(listId).setValue(shopList);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+    }
 }
+

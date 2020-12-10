@@ -71,6 +71,9 @@ public class FreindsInTheListActivity extends AppCompatActivity {
         switch(item.getItemId()){
             case R.id.return_ic:
                 Intent intent = new Intent(FreindsInTheListActivity.this, AddListActivity.class);
+                intent.putExtra("key",listId);
+                intent.putExtra("activity", "display");
+              //  intent.putExtra("activity","friend");
                 startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
