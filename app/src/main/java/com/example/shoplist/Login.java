@@ -60,12 +60,12 @@ public class Login extends AppCompatActivity {
 
         createRequest();
 
-        findViewById(R.id.google_signIn).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                signIn();
-            }
-        });
+//        findViewById(R.id.google_signIn).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                signIn();
+//            }
+//        });
 
 
         //register button

@@ -86,7 +86,8 @@ public class AddParticipants extends AppCompatActivity {
 //                            Toast.makeText(AddParticipants.this, "The user added", Toast.LENGTH_LONG).show();
                         } else {
                             //the user is already exists in the list
-                            Toast.makeText(AddParticipants.this, "The user already exists", Toast.LENGTH_LONG).show();
+                           // Toast.makeText(AddParticipants.this, "The user already exists", Toast.LENGTH_LONG).show();
+                            return;
                         }
                         //go back to the previous intent
 //                        Intent intent = new Intent(AddParticipants.this, AddListActivity.class);
@@ -95,7 +96,8 @@ public class AddParticipants extends AppCompatActivity {
                 }
                 //the email is invalid (doesnt exists in users)
                 if (userUid.isEmpty()) {
-                    Toast.makeText(AddParticipants.this, "The user doesnt exists", Toast.LENGTH_SHORT).show();
+               //     Toast.makeText(AddParticipants.this, "The user doesnt exists", Toast.LENGTH_SHORT).show();
+                    return;
                 }
             }
 
