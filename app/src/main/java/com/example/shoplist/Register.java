@@ -59,7 +59,11 @@ public class Register extends AppCompatActivity {
                 String passwordAuth = userAuthPassword.getText().toString();
                 //if one of the fields is empty, try again
                 if(TextUtils.isEmpty(user) || TextUtils.isEmpty(email) || TextUtils.isEmpty(password) || TextUtils.isEmpty(passwordAuth)){
-                    Toast.makeText(getApplicationContext(), "Not valid",
+                    Toast.makeText(getApplicationContext(), "Not valid, try again",
+                            Toast.LENGTH_LONG).show();
+                    return;
+                }if(!password.equals(passwordAuth)){
+                    Toast.makeText(getApplicationContext(), "Not valid, try again",
                             Toast.LENGTH_LONG).show();
                     return;
                 }

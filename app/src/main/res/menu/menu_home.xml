@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item android:id="@+id/add_list"
+        android:title="הוסף רשימה"
+        app:showAsAction="ifRoom" />
+
+
     <item android:id ="@+id/menu_icon"
         android:icon="@drawable/ic_icon_menu"
         android:title="Item1"
@@ -13,9 +19,12 @@
                 android:visible="false" />
 
             <item android:id="@+id/logout"
-                android:title="התנתק"/>
+                android:title="התנתק"
+                app:showAsAction="never"/>
 
         </menu>
     </item>
+
+
 
 </menu>

@@ -72,30 +72,7 @@ public class HomeActivity extends AppCompatActivity {
         mDatabase = database.getReference("\"shopList\"");
         //init the list of user UID
         initlistUID();
-
         listView = (ListView) findViewById(R.id.myListView);
-        addListButton = (Button) findViewById(R.id.addList_button);
-
-        //create the dialog to add new list
-        addListButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                createAddListDialog();
-
-            }
-
-        });
-
-
-        GoogleSignInAccount signInAccount = GoogleSignIn.getLastSignedInAccount(this);
-        if (signInAccount != null) {
-            String name = signInAccount.getDisplayName();
-            String email = signInAccount.getEmail();
-
-            System.out.println("name.............................." + name + "........................" + email);
-        }
-
-
     }
 
     private void initShopListUID() {
@@ -220,7 +197,6 @@ public class HomeActivity extends AppCompatActivity {
                 String keyId = mDatabase.push().getKey();
 
 
-                System.out.println(mDatabase.toString());
                 //initialization
                 firebaseAuth = FirebaseAuth.getInstance();
                 String userUID = firebaseAuth.getCurrentUser().getUid();
@@ -243,6 +219,7 @@ public class HomeActivity extends AppCompatActivity {
                         ShopList shopList = new ShopList(listNameString, keyId);
                         //add the user permission to shoplist object
                         shopList.getPermissions().add(userPermission);
+                        System.out.println("  -------------------------------mDatabase.toString----------------------------------  " + mDatabase.toString());
                         //push the list to the database
                         mDatabase.child(keyId).setValue(shopList);
                     }
@@ -280,6 +257,10 @@ public class HomeActivity extends AppCompatActivity {
                 FirebaseAuth.getInstance().signOut();
                 Intent intent = new Intent(getApplicationContext(), Login.class);
                 startActivity(intent);
+
+            case R.id.add_list:
+                createAddListDialog();
+
         }
         return super.onOptionsItemSelected(item);
     }

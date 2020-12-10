@@ -38,7 +38,8 @@ public class UserPermission {
     public void setRole(String role) {
         this.role = role;
     }
+
     public String toString(){
-        return email;
+        return email + "    " + role;
     }
 }

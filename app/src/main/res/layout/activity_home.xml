@@ -8,37 +8,23 @@
     android:background="@drawable/in_the_back"
     tools:context=".MainActivity">
 
-    <Button
-        android:id="@+id/addList_button"
-        android:layout_width="62dp"
-        android:layout_height="49dp"
-        android:layout_marginTop="24dp"
-        app:icon="@android:drawable/ic_input_add"
-        app:layout_constraintBottom_toTopOf="@+id/myLists"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.003"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.905" />
-
     <LinearLayout
         android:id="@+id/linearLayout2"
         android:layout_width="410dp"
-        android:layout_height="440dp"
-        android:layout_marginStart="0dp"
-        android:layout_marginTop="3dp"
-        android:layout_marginEnd="0dp"
-        android:layout_marginBottom="1dp"
+        android:layout_height="500dp"
         android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/divider2"
-        tools:layout_editor_absoluteX="-2dp">
+        app:layout_constraintVertical_bias="0.928">
 
 
         <ListView
             android:id="@+id/myListView"
             android:layout_width="350dp"
-            android:layout_height="350dp"
+            android:layout_height="450dp"
             android:layout_gravity="center"
             android:background="@drawable/back"
             android:cacheColorHint="@color/purple_200"
@@ -51,26 +37,28 @@
         android:layout_height="55dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="452dp"
+        android:layout_marginBottom="512dp"
+        android:fontFamily="@font/ankaclm_bold_webfont"
         android:text="הרשימות שלי"
         android:textAlignment="center"
-        android:textSize="30sp"
+        android:textColor="@color/teal_700"
+        android:textSize="36sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.348"
+        app:layout_constraintHorizontal_bias="0.482"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <View
-        android:id="@+id/divider2"
-        android:layout_width="331dp"
-        android:layout_height="4dp"
-        android:layout_marginStart="1dp"
-        android:layout_marginEnd="1dp"
-        android:background="?android:attr/listDivider"
-        app:layout_constraintBottom_toTopOf="@+id/myList"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/myList_textView" />
+<!--    <View-->
+<!--        android:id="@+id/divider2"-->
+<!--        android:layout_width="300dp"-->
+<!--        android:layout_height="4dp"-->
+<!--        android:background="?android:attr/listDivider"-->
+<!--        app:layout_constraintBottom_toTopOf="@+id/myList"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/myList_textView"-->
+<!--        tools:visibility="gone" />-->
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
