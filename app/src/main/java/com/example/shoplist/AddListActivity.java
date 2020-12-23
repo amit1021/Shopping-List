@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -26,10 +25,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.io.Serializable;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.List;
 
 public class AddListActivity extends AppCompatActivity {
     private ArrayList<Item> items;
@@ -131,8 +127,8 @@ public class AddListActivity extends AppCompatActivity {
         editor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String email_user = email.getText().toString();
-                addParticipantToTheList(email_user, listId, "editor");
+                String email_user = email.getText().toString().toLowerCase();
+                addParticipant.addParticipantToTheList(email_user, listId, "editor");
                 dialog.dismiss();
             }
         });
@@ -141,7 +137,7 @@ public class AddListActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String email_user = email.getText().toString();
-                addParticipantToTheList(email_user, listId, "reader");
+                addParticipant.addParticipantToTheList(email_user, listId, "reader");
                 dialog.dismiss();
             }
         });
@@ -293,84 +289,6 @@ public class AddListActivity extends AppCompatActivity {
             startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
-    }
-
-
-    public void addParticipantToTheList (String email, String listId, String type) {
-
-        Friend_database = FirebaseDatabase.getInstance();
-        Friend_mDatabase = Friend_database.getReference("user");
-        Friend_firebaseAuth = FirebaseAuth.getInstance();
-        Friend_mShopListPointer = Friend_database.getReference("\"shopList\"");
-
-        Friend_mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                String userUid = "";
-                //take the list from the database
-                for (DataSnapshot snap : snapshot.getChildren()) {
-                    User currUser = snap.getValue(User.class);
-                    //check if exists user with this email
-                    if (currUser.getEmail().equals(email)) {
-                        //get the userID of the user
-                        userUid = snap.getKey();
-                        //if this user doesnt exists in the specific list -> add his userID to the shoplist
-                        if (!currUser.getShopListUID().contains(listId)) {
-                            currUser.getShopListUID().add(listId);
-                            Friend_mDatabase.child(userUid).setValue(currUser);
-                            updateShopListPermission(email, userUid, listId, type);
-//                            Toast.makeText(AddParticipants.this, "The user added", Toast.LENGTH_LONG).show();
-                        } else {
-                            //the user is already exists in the list
-                             Toast.makeText(AddListActivity.this, "The user already exists", Toast.LENGTH_LONG).show();
-                            return;
-                        }
-                        //go back to the previous intent
-//                        Intent intent = new Intent(AddParticipants.this, AddListActivity.class);
-//                        startActivity(intent);
-                    }
-                }
-                //the email is invalid (doesnt exists in users)
-                if (userUid.isEmpty()) {
-                    Toast.makeText(AddListActivity.this, "The user doesnt exists", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
-    }
-
-    private void updateShopListPermission(String email, String userUid, String listId, String type) {
-        Friend_mShopListPointer.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                ShopList shopList = snapshot.child(listId).getValue(ShopList.class);
-                ArrayList<UserPermission> user_permission = shopList.getPermissions();
-                if(type.equals("reader")) {
-                    UserPermission userPer = new UserPermission(userUid, email, "Reader");
-                    user_permission.add(userPer);
-                    shopList.setPermissions(user_permission);
-
-                }else{
-                    UserPermission userPer = new UserPermission(userUid, email, "Editor");
-                    user_permission.add(userPer);
-                    shopList.setPermissions(user_permission);
-                }
-                shopList.setPermissions(user_permission);
-                Friend_mShopListPointer.child(listId).setValue(shopList);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
     }
 }
 

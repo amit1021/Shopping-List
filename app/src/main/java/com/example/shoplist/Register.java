@@ -54,7 +54,8 @@ public class Register extends AppCompatActivity {
             public void onClick(View v){
                 //take the values
                 String user = userName.getText().toString();
-                String email = userEmail.getText().toString();
+                String email = userEmail.getText().toString().toLowerCase();
+                System.out.println("-------------------------------> " +  email);
                 String password = userPassword.getText().toString();
                 String passwordAuth = userAuthPassword.getText().toString();
                 //if one of the fields is empty, try again
