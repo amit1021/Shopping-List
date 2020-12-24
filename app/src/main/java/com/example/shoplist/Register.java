@@ -136,6 +136,8 @@ public class Register extends AppCompatActivity {
             String keyId = mDatabaseVolunteer.push().getKey();
             //add the user to the database
             mDatabaseVolunteer.child(mAuth.getUid()).setValue(newUser);
+            Intent intent = new Intent(getApplicationContext(), VolunteerAddList.class);
+            startActivity(intent);
             //go to home activity
 //            Intent HomeIntent = new Intent(this, HomeActivity.class);
 //            startActivity(HomeIntent);

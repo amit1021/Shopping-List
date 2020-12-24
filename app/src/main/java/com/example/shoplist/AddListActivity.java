@@ -18,7 +18,6 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -43,7 +42,8 @@ public class AddListActivity extends AppCompatActivity {
     private AlertDialog.Builder shareListDialogBuilder;
     private AlertDialog shareListDialog;
     private EditText nameContact;
-    private EditText addressContact;
+    private EditText streetContact;
+    private EditText cityContact;
     private EditText phoneContact;
     private Button sendShareList;
     private String listName;
@@ -120,7 +120,8 @@ public class AddListActivity extends AppCompatActivity {
         final View layoutShareList = getLayoutInflater().inflate(R.layout.dialog_sharelist, null);
         //the button on th layout
         nameContact = (EditText) layoutShareList.findViewById(R.id.name_contact);
-        addressContact = (EditText) layoutShareList.findViewById(R.id.address_contact);
+        cityContact = (EditText) layoutShareList.findViewById(R.id.city_contact);
+        streetContact = (EditText) layoutShareList.findViewById(R.id.street_contact);
         phoneContact = (EditText) layoutShareList.findViewById(R.id.phone_contact);
         sendShareList = (Button) layoutShareList.findViewById(R.id.send_sharelist_button);
         //show the dialog
@@ -132,10 +133,11 @@ public class AddListActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String name_contact = nameContact.getText().toString();
-                String address_contact = addressContact.getText().toString();
+                String city_contact = cityContact.getText().toString();
+                String street_contact = streetContact.getText().toString();
                 String phone_contact = phoneContact.getText().toString();
                 //create object shareList
-                ShareList shareList = new ShareList(name_contact, address_contact, phone_contact, listId, listName);
+                ShareList shareList = new ShareList(name_contact, city_contact, street_contact, phone_contact, listId, listName);
                 mShareListReference.child(listId).setValue(shareList);
                 shareListDialog.dismiss();
                 closeListToEdit();
@@ -273,6 +275,8 @@ public class AddListActivity extends AppCompatActivity {
                     shopList.setUID(snapshot.child(listId).getValue(ShopList.class).getUID());
                     //get the Permission list from the snapshot and put in the new Shoplist object
                     shopList.setPermissions(snapshot.child(listId).getValue(ShopList.class).getPermissions());
+                    //get the share list from the snapshot and put in the new Shoplist object
+                    shopList.setShare(snapshot.child(listId).getValue(ShopList.class).isShare());
                     //add the new item that the user add to the list
                     shopList.getItems().add(item);
                     //update the database with the new list

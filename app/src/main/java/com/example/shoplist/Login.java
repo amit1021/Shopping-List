@@ -26,6 +26,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class Login extends AppCompatActivity {
 
@@ -40,16 +41,17 @@ public class Login extends AppCompatActivity {
     private GoogleSignInClient mGoogleSignInClient;
 
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        FirebaseUser user = googleAuth.getCurrentUser();
-//        System.out.println("............................................................................................................................." + user.getDisplayName() + "      " + user.getEmail());
-        if (user != null) {
-            Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
-            startActivity(intent);
-        }
-    }
+//    @Override
+//    protected void onStart() {
+//        super.onStart();
+//        FirebaseUser user = googleAuth.getCurrentUser();
+//        if (user != null) {
+//            Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+//            startActivity(intent);
+////            Intent intent = new Intent(getApplicationContext(), VolunteerAddList.class);
+////            startActivity(intent);
+//        }
+//    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,13 +61,6 @@ public class Login extends AppCompatActivity {
         googleAuth = FirebaseAuth.getInstance();
 
         createRequest();
-
-//        findViewById(R.id.google_signIn).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                signIn();
-//            }
-//        });
 
 
         //register button

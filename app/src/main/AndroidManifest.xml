@@ -9,7 +9,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.com.example.shoplist.ShopList">
-        <activity android:name=".FreindsInTheListActivity"></activity>
+        <activity android:name=".VolunteerAddList"></activity>
+        <activity android:name=".VolunteerHome" />
+        <activity android:name=".FreindsInTheListActivity" />
         <activity android:name=".DisplayShopToRead" />
         <activity android:name=".AddParticipants" />
         <activity android:name=".AddListActivity" />

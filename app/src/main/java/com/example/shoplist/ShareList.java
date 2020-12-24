@@ -2,25 +2,37 @@ package com.example.shoplist;
 
 public class ShareList {
     private String nameContact;
-    private String addressContact;
+    private String cityContact;
+    private String streetContact;
     private String phoneContact;
     private String listUid;
     private String nameList;
+    private boolean selected;
 
-    public ShareList(String nameContact, String addressContact, String phoneContact, String listUid, String nameList) {
+    public ShareList(){
+        ;
+    }
+
+    public ShareList(String nameContact, String cityContact,String streetContact, String phoneContact, String listUid, String nameList) {
         this.nameContact = nameContact;
-        this.addressContact = addressContact;
+        this.cityContact = cityContact;
+        this.streetContact = streetContact;
         this.phoneContact = phoneContact;
         this.listUid = listUid;
         this.nameList = nameList;
+        this.selected = false;
     }
 
     public String getNameContact() {
         return nameContact;
     }
 
-    public String getAddressContact() {
-        return addressContact;
+    public String getCityContact() {
+        return cityContact;
+    }
+
+    public String getStreetContact() {
+        return streetContact;
     }
 
     public String getPhoneContact() {
@@ -35,12 +47,20 @@ public class ShareList {
         return nameList;
     }
 
+    public boolean isSelected() {
+        return selected;
+    }
+
     public void setNameContact(String nameContact) {
         this.nameContact = nameContact;
     }
 
-    public void setAddressContact(String addressContact) {
-        this.addressContact = addressContact;
+    public void setCityContact(String cityContact) {
+        this.cityContact = cityContact;
+    }
+
+    public void setStreetContact(String streetContact) {
+        this.streetContact = streetContact;
     }
 
     public void setPhoneContact(String phoneContact) {
@@ -53,5 +73,13 @@ public class ShareList {
 
     public void setNameList(String nameList) {
         this.nameList = nameList;
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected = selected;
+    }
+
+    public String toString() {
+        return nameContact + "\n" + cityContact + ", " + streetContact + "\n" + phoneContact;
     }
 }
