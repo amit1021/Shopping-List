@@ -16,24 +16,13 @@
         android:textAllCaps="true"
         android:textSize="30dp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.04000002" />
-
-    <View
-        android:id="@+id/divider3"
-        android:layout_width="416dp"
-        android:layout_height="1dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="8dp"
-        android:background="?android:attr/listDivider"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Title" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
+        android:id="@+id/linearLayout3"
         android:layout_width="410dp"
         android:layout_height="620dp"
         android:layout_marginTop="12dp"
@@ -44,6 +33,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/Title">
 
+
+        <View
+            android:id="@+id/divider3"
+            android:layout_width="416dp"
+            android:layout_height="1dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="8dp"
+            android:background="?android:attr/listDivider" />
 
         <ListView
             android:id="@+id/listViewReader"

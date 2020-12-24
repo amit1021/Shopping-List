@@ -31,20 +31,24 @@ import com.google.firebase.database.ValueEventListener;
 import java.io.Serializable;
 import java.security.Permission;
 import java.util.ArrayList;
+import java.util.List;
 
 public class HomeActivity extends AppCompatActivity {
 
     private AlertDialog.Builder dialogBuilder;
     private AlertDialog dialog;
 
-    private Button addListButton;
+//    private Button addListButton;
     private Button okListButton;
-    private Button addParticipants;
+//    private Button addParticipants;
 
     private EditText listName;
-    private EditText email_addParticipant;
+//    private EditText email_addParticipant;
     ListView listView;
     private ArrayAdapter<ShopList> shopAdapter;
+
+    ListView listViewListShare;
+    private ArrayAdapter<ShopList> shopAdapterListShare;
 
     private Intent addListIntent;
 
@@ -60,6 +64,7 @@ public class HomeActivity extends AppCompatActivity {
 
     private ArrayList<String> listUID = new ArrayList<>();
     private ArrayList<ShopList> Allshop_list = new ArrayList<>();
+    private ArrayList<ShopList> Allshop_share = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +78,7 @@ public class HomeActivity extends AppCompatActivity {
         //init the list of user UID
         initlistUID();
         listView = (ListView) findViewById(R.id.myListView);
+        listViewListShare = (ListView) findViewById(R.id.myListShare);
     }
 
     private void initShopListUID() {
@@ -85,13 +91,18 @@ public class HomeActivity extends AppCompatActivity {
                     for (int i = 0; i < listUID.size(); i++) {
                         //check if the user have the list
                         if (listUID.get(i) != null && listUID.get(i).equals(shop.getUID())) {
-                            //add the shop list to the list of the shop list that user own
-                            Allshop_list.add(shop);
+                            if(!shop.isShare()){
+                                //add the shop list to the list of the shop list that user own
+                                Allshop_list.add(shop);
+                            } else {
+                                Allshop_share.add(shop);
+                            }
                         }
 
                     }
                 }
                 setAdapter();
+                setAdapterListShare();
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
@@ -129,19 +140,32 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             //when the customer press on the item
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
-                whichActivity(Allshop_list.get(i).getUID());
-                //pass the UID to addListActivity, to show and edit the list in the activity
-//                addListIntent.putExtra("key", Allshop_list.get(i).getUID());
-//
-//                // to know which activity pass the UID
-//                addListIntent.putExtra("activity", "HomeActivity");
-//                startActivity(addListIntent);
+                String listName = Allshop_list.get(i).getName();
+                whichActivity(Allshop_list.get(i).getUID(), listName);
             }
         });
     }
 
-    private void whichActivity(String listUid) {
+    //display all the share list of the user
+
+    private void setAdapterListShare() {
+        shopAdapterListShare = new ArrayAdapter<ShopList>(this, R.layout.row, Allshop_share);
+        listViewListShare.setAdapter(shopAdapterListShare);
+        //if press on one of the list, open the list.
+        listViewListShare.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                String listUid = Allshop_share.get(i).getUID();
+                Intent displayToRead = new Intent(HomeActivity.this, DisplayShopToRead.class);
+                displayToRead.putExtra("key", listUid);
+                startActivity(displayToRead);
+            }
+        });
+    }
+
+
+
+    private void whichActivity(String listUid, String listName) {
 
         firebaseAuth = FirebaseAuth.getInstance();
         String userUID = firebaseAuth.getCurrentUser().getUid();
@@ -155,6 +179,7 @@ public class HomeActivity extends AppCompatActivity {
                     if(per.getUserUid().equals(userUID)){
                         if(per.getRole().equals("Editor")){
                             addListIntent.putExtra("key", listUid);
+                            addListIntent.putExtra("listName", listName);
                             // to know which activity pass the UID
                             addListIntent.putExtra("activity", "HomeActivity");
                             startActivity(addListIntent);
@@ -219,7 +244,6 @@ public class HomeActivity extends AppCompatActivity {
                         ShopList shopList = new ShopList(listNameString, keyId);
                         //add the user permission to shoplist object
                         shopList.getPermissions().add(userPermission);
-                        System.out.println("  -------------------------------mDatabase.toString----------------------------------  " + mDatabase.toString());
                         //push the list to the database
                         mDatabase.child(keyId).setValue(shopList);
                     }
@@ -232,6 +256,7 @@ public class HomeActivity extends AppCompatActivity {
                 //close the dialog
                 dialog.dismiss();
                 addListIntent.putExtra("key", keyId);
+                addListIntent.putExtra("listName", listNameString);
                 startActivity(addListIntent);
             }
         });

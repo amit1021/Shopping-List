@@ -11,12 +11,14 @@ import java.util.ArrayList;
 public class ShopList {
     private String name;
     private String UID;
+    private boolean share;
     private ArrayList<Item> items;
     private ArrayList<UserPermission> permissions;
 
     public ShopList() {
-        items = new ArrayList<>();
-        permissions = new ArrayList<>();
+        this.items = new ArrayList<>();
+        this.permissions = new ArrayList<>();
+        this.share = false;
     }
 
     public ShopList(ShopList other) {
@@ -24,12 +26,14 @@ public class ShopList {
         this.items = other.items;
         this.UID = other.UID;
         this.permissions = other.permissions;
+        this.share = other.share;
     }
 
     public ShopList(String name) {
         this.name = name;
         this.items = new ArrayList<>();
         this.permissions = new ArrayList<>();
+        this.share = false;
     }
 
     public ShopList(String name, String UID) {
@@ -37,6 +41,11 @@ public class ShopList {
         this.UID = UID;
         this.items = new ArrayList<>();
         this.permissions = new ArrayList<>();
+        this.share = false;
+    }
+
+    public boolean isShare() {
+        return share;
     }
 
     public String getName() {
@@ -62,6 +71,8 @@ public class ShopList {
     public void setUID(String UID) {
         this.UID = UID;
     }
+
+    public void setShare(boolean share) { this.share = share;  }
 
     public ArrayList<UserPermission> getPermissions() {
         return permissions;

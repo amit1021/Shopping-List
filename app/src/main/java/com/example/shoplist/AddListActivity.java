@@ -33,18 +33,22 @@ public class AddListActivity extends AppCompatActivity {
 
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference firebaseReference;
-    private DatabaseReference mDatabasePullList;
-
-    //Add Database object
-    private FirebaseDatabase Friend_database;
-    private DatabaseReference Friend_mDatabase;
-    private DatabaseReference Friend_mShopListPointer;
-    private FirebaseAuth Friend_firebaseAuth;
-
+    private DatabaseReference mShareListReference;
 
     private ListView listView;
     private Button button;
-    private Button addPartButton;
+    private Button shareList;
+
+    //dialog share list
+    private AlertDialog.Builder shareListDialogBuilder;
+    private AlertDialog shareListDialog;
+    private EditText nameContact;
+    private EditText addressContact;
+    private EditText phoneContact;
+    private Button sendShareList;
+    private String listName;
+
+    private ShopList shopList;
 
     //dialog add participants
     private AlertDialog.Builder dialogBuilder;
@@ -53,7 +57,6 @@ public class AddListActivity extends AppCompatActivity {
     private Button editor;
     private Button reader;
     private Button cancel;
-
     private String listId;
 
     @Override
@@ -63,15 +66,17 @@ public class AddListActivity extends AppCompatActivity {
 
         listView = findViewById(R.id.listView);
         button = findViewById(R.id.button);
+        shareList = findViewById(R.id.shareList_menu);
 
         //take the uid of the list that the user made
         listId = getIntent().getStringExtra("key");
-
+        //take the list name
+        listName = getIntent().getStringExtra("listName");
 
         //initialization
         firebaseDatabase = FirebaseDatabase.getInstance();
         firebaseReference = firebaseDatabase.getReference("\"shopList\"");
-        mDatabasePullList = firebaseDatabase.getReference("\"shopList\"");
+        mShareListReference = firebaseDatabase.getReference("\"shareList\"");
 
         //take the uid of the list that the user made
         String whichActivity = getIntent().getStringExtra("activity");
@@ -81,8 +86,10 @@ public class AddListActivity extends AppCompatActivity {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     ArrayList<Item> itemToSet = new ArrayList<>();
-                    //get the arraylist of items to update
+                    // get the arraylist of items to update
                     itemToSet = snapshot.child(listId).getValue(ShopList.class).getItems();
+                    // get the shoplist
+                    shopList = snapshot.child(listId).getValue(ShopList.class);
                     //ser the itemList to item to set
                     items = itemToSet;
                     setListner();
@@ -106,7 +113,43 @@ public class AddListActivity extends AppCompatActivity {
         });
     }
 
-    private void openDialog() {
+    private void openDialogShareList(){
+        //dialog
+        shareListDialogBuilder = new AlertDialog.Builder(this);
+        //the layout of the Dialog
+        final View layoutShareList = getLayoutInflater().inflate(R.layout.dialog_sharelist, null);
+        //the button on th layout
+        nameContact = (EditText) layoutShareList.findViewById(R.id.name_contact);
+        addressContact = (EditText) layoutShareList.findViewById(R.id.address_contact);
+        phoneContact = (EditText) layoutShareList.findViewById(R.id.phone_contact);
+        sendShareList = (Button) layoutShareList.findViewById(R.id.send_sharelist_button);
+        //show the dialog
+        shareListDialogBuilder.setView(layoutShareList);
+        shareListDialog = shareListDialogBuilder.create();
+        shareListDialog.show();
+
+        sendShareList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String name_contact = nameContact.getText().toString();
+                String address_contact = addressContact.getText().toString();
+                String phone_contact = phoneContact.getText().toString();
+                //create object shareList
+                ShareList shareList = new ShareList(name_contact, address_contact, phone_contact, listId, listName);
+                mShareListReference.child(listId).setValue(shareList);
+                shareListDialog.dismiss();
+                closeListToEdit();
+            }
+        });
+    }
+
+    private void closeListToEdit() {
+        shopList.setShare(true);
+        System.out.println(shopList.isShare());
+        firebaseReference.child(listId).setValue(shopList);
+    }
+
+    private void openDialogPermission() {
         //dialog
         dialogBuilder = new AlertDialog.Builder(this);
         //the layout of the Dialog
@@ -281,13 +324,20 @@ public class AddListActivity extends AppCompatActivity {
 
         //if the user press on add participants button
         if (item.getTitle().equals("הוסף")) {
-            openDialog();
+            openDialogPermission();
         }
+
         if(item.getTitle().equals("הצג")){
             Intent intent = new Intent(AddListActivity.this, FreindsInTheListActivity.class);
             intent.putExtra("listId", listId);
             startActivity(intent);
         }
+
+        //if the user prees on share list
+        if(item.getTitle().equals("שתף")){
+            openDialogShareList();
+        }
+
         return super.onOptionsItemSelected(item);
     }
 }
