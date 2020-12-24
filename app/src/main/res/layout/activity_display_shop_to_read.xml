@@ -10,6 +10,7 @@
         android:id="@+id/Title"
         android:layout_width="312dp"
         android:layout_height="59dp"
+        android:layout_marginTop="4dp"
         android:fontFamily="@font/titan_one"
         android:text="רשימת הקניות:"
         android:textAlignment="center"
@@ -17,7 +18,7 @@
         android:textSize="30dp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
