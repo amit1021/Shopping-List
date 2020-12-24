@@ -28,13 +28,13 @@ public class ShopList {
         this.permissions = other.permissions;
         this.share = other.share;
     }
-
-    public ShopList(String name) {
-        this.name = name;
-        this.items = new ArrayList<>();
-        this.permissions = new ArrayList<>();
-        this.share = false;
-    }
+//
+//    public ShopList(String name) {
+//        this.name = name;
+//        this.items = new ArrayList<>();
+//        this.permissions = new ArrayList<>();
+//        this.share = false;
+//    }
 
     public ShopList(String name, String UID) {
         this.name = name;
