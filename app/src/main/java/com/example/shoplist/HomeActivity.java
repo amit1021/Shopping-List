@@ -158,6 +158,7 @@ public class HomeActivity extends AppCompatActivity {
                 String listUid = Allshop_share.get(i).getUID();
                 Intent displayToRead = new Intent(HomeActivity.this, DisplayShopToRead.class);
                 displayToRead.putExtra("key", listUid);
+                displayToRead.putExtra("activity", "HomeActivity");
                 startActivity(displayToRead);
             }
         });

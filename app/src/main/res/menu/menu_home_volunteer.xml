@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+                <item
+                    android:id="@+id/setting"
+                    android:title="הגדרות"
+                    android:visible="false"
+                    />
+                <item android:id="@+id/logout"
+                    android:title="התנתק"></item>
+<!--            app:showAsAction="never"-->
+        <item
+            android:id="@+id/add_list_volunteer_home"
+            android:title="הוסף רשימה"
+            />
+</menu>

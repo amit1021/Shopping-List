@@ -5,7 +5,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -124,5 +128,24 @@ public class VolunteerAddList<DialogBuilder> extends AppCompatActivity {
                 });
             }
         });
+    }
+    //the menu on the activity
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_add_list_volunteer, menu);
+        return true;
+    }
+
+    //the option on the menu
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+
+            case R.id.return_ic:
+                Intent intent = new Intent(VolunteerAddList.this, VolunteerHome.class);
+                startActivity(intent);
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

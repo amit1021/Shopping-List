@@ -24,7 +24,7 @@ public class DisplayShopToRead extends AppCompatActivity {
     private FirebaseDatabase database;
     private DatabaseReference mDatabaseRef;
     private String listUid;
-
+    private String activity;
     private ListView listView;
     private ArrayList<Item> items;
     private ArrayAdapter<Item> itemsAdapter;
@@ -35,6 +35,8 @@ public class DisplayShopToRead extends AppCompatActivity {
         setContentView(R.layout.activity_display_shop_to_read);
         //take the listUid from Home activity
         listUid = getIntent().getStringExtra("key");
+        //the activity that reference
+        activity = getIntent().getStringExtra("activity");
         //init
         database = FirebaseDatabase.getInstance();
         mDatabaseRef = database.getReference("\"shopList\"");
@@ -72,8 +74,14 @@ public class DisplayShopToRead extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch(item.getItemId()){
             case R.id.return_ic:
-                Intent intent = new Intent(DisplayShopToRead.this, HomeActivity.class);
-                startActivity(intent);
+                if (activity.equals("VolunteerHome")){
+                    Intent intent = new Intent(DisplayShopToRead.this, VolunteerHome.class);
+                    startActivity(intent);
+                }
+                else if(activity.equals("HomeActivity")){
+                    Intent intent = new Intent(DisplayShopToRead.this, HomeActivity.class);
+                    startActivity(intent);
+                }
         }
         return super.onOptionsItemSelected(item);
     }
