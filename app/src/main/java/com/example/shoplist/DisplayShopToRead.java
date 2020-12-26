@@ -35,7 +35,6 @@ public class DisplayShopToRead extends AppCompatActivity {
         setContentView(R.layout.activity_display_shop_to_read);
         //take the listUid from Home activity
         listUid = getIntent().getStringExtra("key");
-        System.out.println("key -------------------------- " + listUid);
         //init
         database = FirebaseDatabase.getInstance();
         mDatabaseRef = database.getReference("\"shopList\"");
@@ -45,7 +44,6 @@ public class DisplayShopToRead extends AppCompatActivity {
         mDatabaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                System.out.println(snapshot.toString() + " ----------");
                 ShopList shop = (ShopList)snapshot.child(listUid).getValue(ShopList.class);
                 items = shop.getItems();
                 itemsAdapter = new ArrayAdapter<Item>(DisplayShopToRead.this, android.R.layout.simple_list_item_1, items);

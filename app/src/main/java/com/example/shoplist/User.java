@@ -17,6 +17,7 @@ public class User {
         this.user = user;
         this.email = email;
         this.password = password;
+        this.passwordAuth = password;
         shopListUID = new ArrayList<>();
     }
 

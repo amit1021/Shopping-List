@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,17 +18,13 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.io.Serializable;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.List;
 
 public class AddListActivity extends AppCompatActivity {
     private ArrayList<Item> items;
@@ -37,18 +32,23 @@ public class AddListActivity extends AppCompatActivity {
 
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference firebaseReference;
-    private DatabaseReference mDatabasePullList;
-
-    //Add Database object
-    private FirebaseDatabase Friend_database;
-    private DatabaseReference Friend_mDatabase;
-    private DatabaseReference Friend_mShopListPointer;
-    private FirebaseAuth Friend_firebaseAuth;
-
+    private DatabaseReference mShareListReference;
 
     private ListView listView;
     private Button button;
-    private Button addPartButton;
+    private Button shareList;
+
+    //dialog share list
+    private AlertDialog.Builder shareListDialogBuilder;
+    private AlertDialog shareListDialog;
+    private EditText nameContact;
+    private EditText streetContact;
+    private EditText cityContact;
+    private EditText phoneContact;
+    private Button sendShareList;
+    private String listName;
+
+    private ShopList shopList;
 
     //dialog add participants
     private AlertDialog.Builder dialogBuilder;
@@ -57,7 +57,6 @@ public class AddListActivity extends AppCompatActivity {
     private Button editor;
     private Button reader;
     private Button cancel;
-
     private String listId;
 
     @Override
@@ -67,15 +66,17 @@ public class AddListActivity extends AppCompatActivity {
 
         listView = findViewById(R.id.listView);
         button = findViewById(R.id.button);
+        shareList = findViewById(R.id.shareList_menu);
 
         //take the uid of the list that the user made
         listId = getIntent().getStringExtra("key");
-
+        //take the list name
+        listName = getIntent().getStringExtra("listName");
 
         //initialization
         firebaseDatabase = FirebaseDatabase.getInstance();
         firebaseReference = firebaseDatabase.getReference("\"shopList\"");
-        mDatabasePullList = firebaseDatabase.getReference("\"shopList\"");
+        mShareListReference = firebaseDatabase.getReference("\"shareList\"");
 
         //take the uid of the list that the user made
         String whichActivity = getIntent().getStringExtra("activity");
@@ -85,8 +86,10 @@ public class AddListActivity extends AppCompatActivity {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     ArrayList<Item> itemToSet = new ArrayList<>();
-                    //get the arraylist of items to update
+                    // get the arraylist of items to update
                     itemToSet = snapshot.child(listId).getValue(ShopList.class).getItems();
+                    // get the shoplist
+                    shopList = snapshot.child(listId).getValue(ShopList.class);
                     //ser the itemList to item to set
                     items = itemToSet;
                     setListner();
@@ -110,7 +113,45 @@ public class AddListActivity extends AppCompatActivity {
         });
     }
 
-    private void openDialog() {
+    private void openDialogShareList(){
+        //dialog
+        shareListDialogBuilder = new AlertDialog.Builder(this);
+        //the layout of the Dialog
+        final View layoutShareList = getLayoutInflater().inflate(R.layout.dialog_sharelist, null);
+        //the button on th layout
+        nameContact = (EditText) layoutShareList.findViewById(R.id.name_contact);
+        cityContact = (EditText) layoutShareList.findViewById(R.id.city_contact);
+        streetContact = (EditText) layoutShareList.findViewById(R.id.street_contact);
+        phoneContact = (EditText) layoutShareList.findViewById(R.id.phone_contact);
+        sendShareList = (Button) layoutShareList.findViewById(R.id.send_sharelist_button);
+        //show the dialog
+        shareListDialogBuilder.setView(layoutShareList);
+        shareListDialog = shareListDialogBuilder.create();
+        shareListDialog.show();
+
+        sendShareList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String name_contact = nameContact.getText().toString();
+                String city_contact = cityContact.getText().toString();
+                String street_contact = streetContact.getText().toString();
+                String phone_contact = phoneContact.getText().toString();
+                //create object shareList
+                ShareList shareList = new ShareList(name_contact, city_contact, street_contact, phone_contact, listId, listName);
+                mShareListReference.child(listId).setValue(shareList);
+                shareListDialog.dismiss();
+                closeListToEdit();
+            }
+        });
+    }
+
+    private void closeListToEdit() {
+        shopList.setShare(true);
+        System.out.println(shopList.isShare());
+        firebaseReference.child(listId).setValue(shopList);
+    }
+
+    private void openDialogPermission() {
         //dialog
         dialogBuilder = new AlertDialog.Builder(this);
         //the layout of the Dialog
@@ -131,8 +172,8 @@ public class AddListActivity extends AppCompatActivity {
         editor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String email_user = email.getText().toString();
-                addParticipantToTheList(email_user, listId, "editor");
+                String email_user = email.getText().toString().toLowerCase();
+                addParticipant.addParticipantToTheList(email_user, listId, "editor");
                 dialog.dismiss();
             }
         });
@@ -141,7 +182,7 @@ public class AddListActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String email_user = email.getText().toString();
-                addParticipantToTheList(email_user, listId, "reader");
+                addParticipant.addParticipantToTheList(email_user, listId, "reader");
                 dialog.dismiss();
             }
         });
@@ -234,6 +275,8 @@ public class AddListActivity extends AppCompatActivity {
                     shopList.setUID(snapshot.child(listId).getValue(ShopList.class).getUID());
                     //get the Permission list from the snapshot and put in the new Shoplist object
                     shopList.setPermissions(snapshot.child(listId).getValue(ShopList.class).getPermissions());
+                    //get the share list from the snapshot and put in the new Shoplist object
+                    shopList.setShare(snapshot.child(listId).getValue(ShopList.class).isShare());
                     //add the new item that the user add to the list
                     shopList.getItems().add(item);
                     //update the database with the new list
@@ -285,92 +328,21 @@ public class AddListActivity extends AppCompatActivity {
 
         //if the user press on add participants button
         if (item.getTitle().equals("הוסף")) {
-            openDialog();
+            openDialogPermission();
         }
+
         if(item.getTitle().equals("הצג")){
             Intent intent = new Intent(AddListActivity.this, FreindsInTheListActivity.class);
             intent.putExtra("listId", listId);
             startActivity(intent);
         }
+
+        //if the user prees on share list
+        if(item.getTitle().equals("שתף")){
+            openDialogShareList();
+        }
+
         return super.onOptionsItemSelected(item);
-    }
-
-
-    public void addParticipantToTheList (String email, String listId, String type) {
-
-        Friend_database = FirebaseDatabase.getInstance();
-        Friend_mDatabase = Friend_database.getReference("user");
-        Friend_firebaseAuth = FirebaseAuth.getInstance();
-        Friend_mShopListPointer = Friend_database.getReference("\"shopList\"");
-
-        Friend_mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                String userUid = "";
-                //take the list from the database
-                for (DataSnapshot snap : snapshot.getChildren()) {
-                    User currUser = snap.getValue(User.class);
-                    //check if exists user with this email
-                    if (currUser.getEmail().equals(email)) {
-                        //get the userID of the user
-                        userUid = snap.getKey();
-                        //if this user doesnt exists in the specific list -> add his userID to the shoplist
-                        if (!currUser.getShopListUID().contains(listId)) {
-                            currUser.getShopListUID().add(listId);
-                            Friend_mDatabase.child(userUid).setValue(currUser);
-                            updateShopListPermission(email, userUid, listId, type);
-//                            Toast.makeText(AddParticipants.this, "The user added", Toast.LENGTH_LONG).show();
-                        } else {
-                            //the user is already exists in the list
-                             Toast.makeText(AddListActivity.this, "The user already exists", Toast.LENGTH_LONG).show();
-                            return;
-                        }
-                        //go back to the previous intent
-//                        Intent intent = new Intent(AddParticipants.this, AddListActivity.class);
-//                        startActivity(intent);
-                    }
-                }
-                //the email is invalid (doesnt exists in users)
-                if (userUid.isEmpty()) {
-                    Toast.makeText(AddListActivity.this, "The user doesnt exists", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
-    }
-
-    private void updateShopListPermission(String email, String userUid, String listId, String type) {
-        Friend_mShopListPointer.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                ShopList shopList = snapshot.child(listId).getValue(ShopList.class);
-                ArrayList<UserPermission> user_permission = shopList.getPermissions();
-                if(type.equals("reader")) {
-                    UserPermission userPer = new UserPermission(userUid, email, "Reader");
-                    user_permission.add(userPer);
-                    shopList.setPermissions(user_permission);
-
-                }else{
-                    UserPermission userPer = new UserPermission(userUid, email, "Editor");
-                    user_permission.add(userPer);
-                    shopList.setPermissions(user_permission);
-                }
-                shopList.setPermissions(user_permission);
-                Friend_mShopListPointer.child(listId).setValue(shopList);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
     }
 }
 

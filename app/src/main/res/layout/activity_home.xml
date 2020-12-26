@@ -23,12 +23,38 @@
 
         <ListView
             android:id="@+id/myListView"
-            android:layout_width="350dp"
-            android:layout_height="450dp"
+            android:layout_width="342dp"
+            android:layout_height="257dp"
             android:layout_gravity="center"
             android:background="@drawable/back"
             android:cacheColorHint="@color/purple_200"
+            android:textSize="30sp" >
+
+        </ListView>
+
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="הרשימות שנשלחו"
+            android:fontFamily="@font/ankaclm_bold_webfont"
+            android:textAlignment="center"
+            android:textColor="@color/teal_700"
+            android:textSize="36sp"
+            android:textStyle="bold"            />
+
+        <ListView
+            android:id="@+id/myListShare"
+            android:layout_width="343dp"
+            android:layout_height="130dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/back"
+            android:cacheColorHint="@color/purple_200"
             android:textSize="30sp" />
+
     </LinearLayout>
 
     <TextView
