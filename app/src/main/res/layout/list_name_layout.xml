@@ -15,6 +15,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:text="שם הרשימה: "
+        android:fontFamily="@font/dorianclm_book_webfont"
         android:textAlignment="center"
         android:textSize="18sp"
         android:textStyle="bold"
@@ -41,12 +42,13 @@
 
     <Button
         android:id="@+id/okListButton"
-        android:layout_width="90dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:backgroundTint="#009688"
         android:text="הוסף"
+        android:fontFamily="@font/dorianclm_book_webfont"
         android:textStyle="bold"
         app:layout_constraintVertical_bias="0.99" />
 

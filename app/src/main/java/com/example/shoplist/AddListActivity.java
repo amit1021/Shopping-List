@@ -65,7 +65,7 @@ public class AddListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_list);
 
         listView = findViewById(R.id.listView);
-        button = findViewById(R.id.button);
+        button = findViewById(R.id.add_item_button);
         shareList = findViewById(R.id.shareList_menu);
 
         //take the uid of the list that the user made
@@ -246,9 +246,9 @@ public class AddListActivity extends AppCompatActivity {
 
     private void addItem(View view) {
         //take the values from the user
-        EditText input = findViewById(R.id.input);
+        EditText input = findViewById(R.id.item_name_text_view);
         String itemText = input.getText().toString();
-        EditText quantityItem = findViewById(R.id.quantityItems);
+        EditText quantityItem = findViewById(R.id.item_quantity_text_view);
 
         String quantityText = quantityItem.getText().toString();
         if (!itemText.equals("") && isLegal(quantityText)) {

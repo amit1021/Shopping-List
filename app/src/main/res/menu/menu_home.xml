@@ -3,6 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item android:id="@+id/add_list"
+        android:icon="@drawable/ic_icons8_plus"
+        android:iconTint="@color/white"
         android:title="הוסף רשימה"
         app:showAsAction="ifRoom" />
 
@@ -10,7 +12,8 @@
     <item android:id ="@+id/menu_icon"
         android:icon="@drawable/ic_icon_menu"
         android:title="Item1"
-        app:showAsAction="ifRoom">
+        app:showAsAction="ifRoom"
+        >
 
         <menu>
             <item
@@ -19,12 +22,11 @@
                 android:visible="false" />
 
             <item android:id="@+id/logout"
+                android:icon="@drawable/ic_logout"
                 android:title="התנתק"
                 app:showAsAction="never"/>
 
         </menu>
     </item>
-
-
 
 </menu>

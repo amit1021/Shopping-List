@@ -77,7 +77,7 @@ public class VolunteerAddList<DialogBuilder> extends AppCompatActivity {
     }
 
     private void setAdapter() {
-        arrayAdapter = new ArrayAdapter<ShareList>(this, R.layout.row, arrayList);
+        arrayAdapter = new ArrayAdapter<ShareList>(this, R.layout.volunteer_row, arrayList);
         listView.setAdapter(arrayAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

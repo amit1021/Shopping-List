@@ -23,9 +23,14 @@
 
     <TextView
         android:id="@+id/text_view_volunteer_home"
-        android:layout_width="124dp"
-        android:layout_height="54dp"
+        android:layout_width="287dp"
+        android:layout_height="82dp"
+        android:fontFamily="@font/ankaclm_bold_webfont"
         android:text="הרשימות שלי"
+        android:textAlignment="center"
+        android:textColor="@color/teal_700"
+        android:textSize="36sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.466"

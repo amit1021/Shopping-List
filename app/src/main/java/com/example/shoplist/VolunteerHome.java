@@ -89,7 +89,7 @@ public class VolunteerHome extends AppCompatActivity {
     }
 
     private void setAdapter(){
-        arrayAdapter = new ArrayAdapter<ShareList>(this, R.layout.row, arrayList);
+        arrayAdapter = new ArrayAdapter<ShareList>(this, R.layout.volunteer_row, arrayList);
         listView.setAdapter(arrayAdapter);
         System.out.println(arrayList);
         //if press on one of the list, open the list.
@@ -124,10 +124,10 @@ public class VolunteerHome extends AppCompatActivity {
                 Intent addList = new Intent(VolunteerHome.this, VolunteerAddList.class);
                 startActivity(addList);
 
-//            case R.id.logout:
-//                FirebaseAuth.getInstance().signOut();
-//                Intent intent = new Intent(getApplicationContext(), Login.class);
-//                startActivity(intent);
+            case R.id.logout:
+                FirebaseAuth.getInstance().signOut();
+                Intent intent = new Intent(getApplicationContext(), Login.class);
+                startActivity(intent);
 
         }
         return super.onOptionsItemSelected(item);

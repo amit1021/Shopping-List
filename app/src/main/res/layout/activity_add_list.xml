@@ -4,10 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/add_list"
     tools:context=".AddListActivity">
 
     <EditText
-        android:id="@+id/quantityItems"
+        android:id="@+id/item_quantity_text_view"
         android:layout_width="67dp"
         android:layout_height="41dp"
         android:layout_marginBottom="8dp"
@@ -23,7 +24,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
-        android:id="@+id/input"
+        android:id="@+id/item_name_text_view"
         android:layout_width="145dp"
         android:layout_height="43dp"
         android:layout_marginBottom="8dp"
@@ -39,7 +40,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/add_item_button"
         android:layout_width="115dp"
         android:layout_height="52dp"
         android:layout_marginBottom="4dp"
@@ -59,7 +60,7 @@
         android:layout_marginStart="1dp"
         android:layout_marginEnd="1dp"
         android:background="@color/purple_200"
-        app:layout_constraintBottom_toTopOf="@+id/input"
+        app:layout_constraintBottom_toTopOf="@+id/item_name_text_view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent" />
@@ -72,7 +73,7 @@
         android:layout_marginEnd="1dp"
         android:layout_marginBottom="1dp"
         android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/button"
+        app:layout_constraintBottom_toTopOf="@+id/add_item_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
