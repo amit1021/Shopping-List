@@ -38,7 +38,8 @@ public class AddListActivity extends AppCompatActivity {
     private ListView listView;
     private ImageButton button;
     private Button shareList;
-    private Button barcode;
+    private ImageButton barcode;
+    private ImageButton return_dialog;
 
     //dialog share list
     private AlertDialog.Builder shareListDialogBuilder;
@@ -141,6 +142,7 @@ public class AddListActivity extends AppCompatActivity {
         streetContact = (EditText) layoutShareList.findViewById(R.id.street_contact);
         phoneContact = (EditText) layoutShareList.findViewById(R.id.phone_contact);
         sendShareList = (Button) layoutShareList.findViewById(R.id.send_sharelist_button);
+        return_dialog = (ImageButton) layoutShareList.findViewById(R.id.return_dialog);
         //show the dialog
         shareListDialogBuilder.setView(layoutShareList);
         shareListDialog = shareListDialogBuilder.create();
@@ -162,6 +164,13 @@ public class AddListActivity extends AppCompatActivity {
                     shareListDialog.dismiss();
                     closeListToEdit();
                 }
+            }
+        });
+
+        return_dialog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                shareListDialog.dismiss();
             }
         });
     }

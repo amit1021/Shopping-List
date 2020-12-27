@@ -7,14 +7,6 @@
     android:background="@drawable/ic_background_powerpoint"
     tools:context=".AddListActivity">
 
-    <Button
-        android:id="@+id/barcode_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Button"
-        tools:layout_editor_absoluteX="1dp"
-        tools:layout_editor_absoluteY="15dp" />
-
     <EditText
         android:id="@+id/item_name_text_view"
         android:layout_width="152dp"
@@ -78,7 +70,7 @@
             android:id="@+id/listView"
             android:layout_width="410dp"
             android:layout_height="match_parent"
-            android:background="@drawable/ic_background_powerpoint" >
+            android:background="@drawable/ic_background_powerpoint">
 
         </ListView>
     </LinearLayout>
@@ -95,5 +87,17 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageButton
+        android:id="@+id/barcode_button"
+        android:layout_width="53dp"
+        android:layout_height="75dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/ic_background_powerpoint"
+        app:layout_constraintEnd_toStartOf="@+id/item_quantity_text_view"
+        app:layout_constraintHorizontal_bias="0.28"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/divider"
+        app:srcCompat="@drawable/ic_baseline_qr_code_2_24" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

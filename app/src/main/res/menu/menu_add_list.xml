@@ -3,23 +3,27 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/shareList_menu"
-        android:title="שתף"
-        app:showAsAction="ifRoom" />
-    <item
-        android:id="@+id/display_participants"
-        android:title="הצג"
-        app:showAsAction="ifRoom" />
+        android:id="@+id/add_participants_menu"
+        android:icon="@drawable/ic_baseline_group_add_24"
+        android:title="הוסף"
+        app:showAsAction="always"/>
 
     <item
-        android:id="@+id/add_participants_menu"
-        android:title="הוסף"
-        app:showAsAction="ifRoom" />
+        android:id="@+id/display_participants"
+        android:icon="@drawable/ic_friend"
+        android:title="הצג"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/shareList_menu"
+        android:icon="@drawable/ic_baseline_shopping_cart_24"
+        android:title="שתף"
+        app:showAsAction="always" />
 
     <item
         android:id="@+id/return_ic"
         android:icon="@drawable/return_icon"
-        android:title="return"
-        app:showAsAction="ifRoom" />
+        android:title="חזור"
+        app:showAsAction="always" />
 
 </menu>
