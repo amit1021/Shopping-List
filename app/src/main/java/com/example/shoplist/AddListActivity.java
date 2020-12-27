@@ -136,19 +136,31 @@ public class AddListActivity extends AppCompatActivity {
                 String city_contact = cityContact.getText().toString();
                 String street_contact = streetContact.getText().toString();
                 String phone_contact = phoneContact.getText().toString();
-                //create object shareList
-                ShareList shareList = new ShareList(name_contact, city_contact, street_contact, phone_contact, listId, listName);
-                mShareListReference.child(listId).setValue(shareList);
-                shareListDialog.dismiss();
-                closeListToEdit();
+                if(name_contact.isEmpty() || city_contact.isEmpty() || street_contact.isEmpty() || phone_contact.isEmpty()){
+                    Toast.makeText(AddListActivity.this, "missing fields", Toast.LENGTH_LONG).show();
+                }else {
+                    //create object shareList
+                    ShareList shareList = new ShareList(name_contact, city_contact, street_contact, phone_contact, listId, listName);
+                    mShareListReference.child(listId).setValue(shareList);
+                    shareListDialog.dismiss();
+                    closeListToEdit();
+                }
             }
         });
     }
 
     private void closeListToEdit() {
-        shopList.setShare(true);
-        System.out.println(shopList.isShare());
-        firebaseReference.child(listId).setValue(shopList);
+        if(shopList == null){
+            Toast.makeText(AddListActivity.this,"The list is empty", Toast.LENGTH_LONG).show();
+        }else{
+            shopList.setShare(true);
+            System.out.println(shopList.isShare());
+            firebaseReference.child(listId).setValue(shopList);
+            Intent intent = new Intent(AddListActivity.this, HomeActivity.class);
+            startActivity(intent);
+        }
+
+
     }
 
     private void openDialogPermission() {
@@ -266,7 +278,7 @@ public class AddListActivity extends AppCompatActivity {
             firebaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    ShopList shopList = new ShopList();
+                    shopList = new ShopList();
                     //get the items arraylist from the snapshot and put in the new Shoplist object
                     shopList.setItems(snapshot.child(listId).getValue(ShopList.class).getItems());
                     //get the list name from the snapshot and put in the new Shoplist object

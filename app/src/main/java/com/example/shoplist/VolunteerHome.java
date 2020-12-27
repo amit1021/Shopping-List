@@ -66,7 +66,7 @@ public class VolunteerHome extends AppCompatActivity {
     }
 
     private void initShareList(){
-        shareListReference = firebaseDatabase.getReference("\"shareList\"");
+        shareListReference = firebaseDatabase.getReference("shareList");
         shareListReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
