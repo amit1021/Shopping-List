@@ -23,7 +23,7 @@
     <item
         android:id="@+id/return_ic"
         android:icon="@drawable/return_icon"
-        android:title="חזור"
+        android:title="return"
         app:showAsAction="always" />
 
 </menu>
