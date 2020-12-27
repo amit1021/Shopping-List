@@ -37,6 +37,7 @@ public class AddListActivity extends AppCompatActivity {
     private ListView listView;
     private Button button;
     private Button shareList;
+    private Button barcode;
 
     //dialog share list
     private AlertDialog.Builder shareListDialogBuilder;
@@ -67,6 +68,14 @@ public class AddListActivity extends AppCompatActivity {
         listView = findViewById(R.id.listView);
         button = findViewById(R.id.add_item_button);
         shareList = findViewById(R.id.shareList_menu);
+        barcode = findViewById(R.id.barcode_button);
+        barcode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(AddListActivity.this, BarcodeActivity.class);
+                startActivity(intent);
+            }
+        });
 
         //take the uid of the list that the user made
         listId = getIntent().getStringExtra("key");
@@ -152,7 +161,7 @@ public class AddListActivity extends AppCompatActivity {
     private void closeListToEdit() {
         if(shopList == null){
             Toast.makeText(AddListActivity.this,"The list is empty", Toast.LENGTH_LONG).show();
-        }else{
+        } else {
             shopList.setShare(true);
             System.out.println(shopList.isShare());
             firebaseReference.child(listId).setValue(shopList);

@@ -323,6 +323,7 @@ public class HomeActivity extends AppCompatActivity {
         for(int i = 0; i < Allshop_share.size(); i++){
             if (share_list.get(i).isSelected() && !share_list.get(i).isNotification()){
                 share_list.get(i).setNotification(true);
+                mSharList.child(share_list.get(i).getListUid()).setValue(share_list.get(i));
                 createChannel();
                 addNotification(CHANNEL);
             }
