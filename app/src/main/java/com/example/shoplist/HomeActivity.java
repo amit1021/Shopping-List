@@ -190,6 +190,7 @@ public class HomeActivity extends AppCompatActivity {
                             startActivity(addListIntent);
                         }else{
                             Intent DisplayShopToRead = new Intent(HomeActivity.this, DisplayShopToRead.class);
+                            DisplayShopToRead.putExtra("activity", "HomeActivity");
                             DisplayShopToRead.putExtra("key", listUid);
                             startActivity(DisplayShopToRead);
 
@@ -279,19 +280,15 @@ public class HomeActivity extends AppCompatActivity {
     //the option on the menu
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.setting:
-
-
-            case R.id.logout:
-                FirebaseAuth.getInstance().signOut();
-                Intent intent = new Intent(getApplicationContext(), Login.class);
-                startActivity(intent);
-
-            case R.id.add_list:
-                createAddListDialog();
-
+        if(R.id.logout == item.getItemId()) {
+            FirebaseAuth.getInstance().signOut();
+            Intent intent = new Intent(getApplicationContext(), Login.class);
+            startActivity(intent);
         }
+        else if(R.id.add_list == item.getItemId()) {
+            createAddListDialog();
+        }
+
         return super.onOptionsItemSelected(item);
     }
 

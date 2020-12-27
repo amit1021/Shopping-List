@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.RadioButton;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
@@ -40,6 +41,11 @@ public class AddListActivity extends AppCompatActivity {
     private Button shareList;
     private ImageButton barcode;
     private ImageButton return_dialog;
+
+    private RadioButton readerRadio;
+    private RadioButton editorRadio;
+    private Button addButton;
+
 
     //dialog share list
     private AlertDialog.Builder shareListDialogBuilder;
@@ -93,7 +99,7 @@ public class AddListActivity extends AppCompatActivity {
         //take the uid of the list that the user made
         String whichActivity = getIntent().getStringExtra("activity");
         //if the whichActivity equals to HomeActivity' we came from home activity and the list is already exist
-        if (whichActivity != null && (whichActivity.equals("HomeActivity") || whichActivity.equals("display")) || whichActivity.equals("BarcodeActivity")) {
+        if (whichActivity != null && (whichActivity.equals("HomeActivity") || whichActivity.equals("display") || whichActivity.equals("BarcodeActivity"))) {
             firebaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -107,7 +113,6 @@ public class AddListActivity extends AppCompatActivity {
                     if (whichActivity.equals("BarcodeActivity")){
                         String nameProduct = getIntent().getStringExtra("productName");
                         EditText input = findViewById(R.id.item_name_text_view);
-                        System.out.println("----------------------------------------" + nameProduct + "-----------------------------------------");
                         input.setText(nameProduct);
                     }
                     setListner();
@@ -142,7 +147,6 @@ public class AddListActivity extends AppCompatActivity {
         streetContact = (EditText) layoutShareList.findViewById(R.id.street_contact);
         phoneContact = (EditText) layoutShareList.findViewById(R.id.phone_contact);
         sendShareList = (Button) layoutShareList.findViewById(R.id.send_sharelist_button);
-        return_dialog = (ImageButton) layoutShareList.findViewById(R.id.return_dialog);
         //show the dialog
         shareListDialogBuilder.setView(layoutShareList);
         shareListDialog = shareListDialogBuilder.create();
@@ -196,42 +200,30 @@ public class AddListActivity extends AppCompatActivity {
         final View layoutPermission = getLayoutInflater().inflate(R.layout.dialog_permission, null);
 
         //the button on th layout
-        email = (EditText) layoutPermission.findViewById(R.id.quantity_scan_text_view);
-        editor = (Button) layoutPermission.findViewById(R.id.editor_button);
-        reader = (Button) layoutPermission.findViewById(R.id.reader_button);
-        cancel = (Button) layoutPermission.findViewById(R.id.add_item_scan_button);
+        email = (EditText) layoutPermission.findViewById(R.id.email_add_friend_text_view);
+        readerRadio = (RadioButton)layoutPermission.findViewById(R.id.reader_radioButton);
+        editorRadio = (RadioButton)layoutPermission.findViewById(R.id.editor_radioButton);
+        addButton = (Button)layoutPermission.findViewById(R.id.add_button);
 
         //show the dialog
         dialogBuilder.setView(layoutPermission);
         dialog = dialogBuilder.create();
         dialog.show();
 
-        //set editor participants
-        editor.setOnClickListener(new View.OnClickListener() {
+
+        addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String email_user = email.getText().toString().toLowerCase();
-                addParticipant.addParticipantToTheList(email_user, listId, "editor");
-                dialog.dismiss();
+                if (readerRadio.isChecked()){
+                    addParticipant.addParticipantToTheList(email_user, listId, "reader");
+                    dialog.dismiss();
+                } else if(editorRadio.isChecked()){
+                    addParticipant.addParticipantToTheList(email_user, listId, "editor");
+                    dialog.dismiss();
+                }
             }
         });
-        //set reader participants
-        reader.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String email_user = email.getText().toString();
-                addParticipant.addParticipantToTheList(email_user, listId, "reader");
-                dialog.dismiss();
-            }
-        });
-        //close windows
-        cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog.dismiss();
-            }
-        });
-
     }
 
     //set the Adapter to display the list
@@ -383,4 +375,3 @@ public class AddListActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 }
-

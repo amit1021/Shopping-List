@@ -72,13 +72,12 @@ public class DisplayShopToRead extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch(item.getItemId()){
-            case R.id.return_ic:
-                if (activity.equals("VolunteerHome")){
+            if (R.id.return_ic == item.getItemId()) {
+                if (activity!= null && activity.equals("VolunteerHome")) {
                     Intent intent = new Intent(DisplayShopToRead.this, VolunteerHome.class);
                     startActivity(intent);
                 }
-                else if(activity.equals("HomeActivity")){
+                else if(activity!= null && activity.equals("HomeActivity")){
                     Intent intent = new Intent(DisplayShopToRead.this, HomeActivity.class);
                     startActivity(intent);
                 }
