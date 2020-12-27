@@ -170,13 +170,6 @@ public class AddListActivity extends AppCompatActivity {
                 }
             }
         });
-
-        return_dialog.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                shareListDialog.dismiss();
-            }
-        });
     }
 
     private void closeListToEdit() {

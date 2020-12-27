@@ -48,7 +48,7 @@ public class DisplayShopToRead extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 ShopList shop = (ShopList)snapshot.child(listUid).getValue(ShopList.class);
                 items = shop.getItems();
-                itemsAdapter = new ArrayAdapter<Item>(DisplayShopToRead.this, android.R.layout.simple_list_item_1, items);
+                itemsAdapter = new ArrayAdapter<Item>(DisplayShopToRead.this, R.layout.row, items);
                 listView.setAdapter(itemsAdapter);
 
 //                itemAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, itemToDisplay);

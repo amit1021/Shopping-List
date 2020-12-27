@@ -1,22 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item
-        android:id="@+id/setting"
-        android:title="הגדרות"
-        android:visible="false"
-        />
-    <item android:id="@+id/logout"
-        android:icon="@drawable/ic_logout"
-        android:title="התנתק"></item>
-<!--app:showAsAction="never"-->
-    <item
-        android:id="@+id/add_list_volunteer_home"
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item android:id="@+id/add_list_volunteer_home"
         android:icon="@drawable/ic_icons8_plus"
+        android:iconTint="@color/white"
         android:title="הוסף רשימה"
-        />
-<!--    <item-->
-<!--        android:id="@+id/return_ic"-->
-<!--        android:icon="@drawable/return_icon"-->
-<!--        android:title="return"-->
-<!--        app:showAsAction="ifRoom"/>-->
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/logout"
+        android:icon="@drawable/ic_logout"
+        android:iconTint="@color/white"
+        android:title="התנתק"
+        app:showAsAction="always" />
+
 </menu>
+
+
+
+<!--<item android:id="@+id/logout"-->
+<!--android:icon="@drawable/ic_logout"-->
+<!--android:title="התנתק"-->
+<!--    ></item>-->
+
+<!--<item-->
+<!--android:id="@+id/add_list_volunteer_home"-->
+<!--android:icon="@drawable/ic_icons8_plus"-->
+<!--android:title="הוסף רשימה"-->
+<!--    />-->

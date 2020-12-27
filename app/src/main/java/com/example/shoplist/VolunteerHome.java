@@ -118,17 +118,16 @@ public class VolunteerHome extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.setting:
-
             case R.id.add_list_volunteer_home:
                 Intent addList = new Intent(VolunteerHome.this, VolunteerAddList.class);
                 startActivity(addList);
+                break;
 
             case R.id.logout:
                 FirebaseAuth.getInstance().signOut();
                 Intent intent = new Intent(getApplicationContext(), Login.class);
                 startActivity(intent);
-
+                break;
         }
         return super.onOptionsItemSelected(item);
     }

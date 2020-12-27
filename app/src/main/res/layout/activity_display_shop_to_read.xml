@@ -12,7 +12,7 @@
         android:layout_width="410dp"
         android:layout_height="620dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="70dp"
+        android:layout_marginTop="90dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -23,8 +23,8 @@
 
         <ListView
             android:id="@+id/listViewReader"
-            android:layout_width="382dp"
-            android:layout_height="596dp"
+            android:layout_width="351dp"
+            android:layout_height="586dp"
             android:background="@drawable/ic_background_powerpoint"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -44,6 +44,7 @@
         android:text="רשימת קניות:"
         android:textAlignment="center"
         android:textAllCaps="true"
+        android:textColor="@color/teal_700"
         android:textSize="30dp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"

@@ -42,7 +42,6 @@ public class VolunteerAddList<DialogBuilder> extends AppCompatActivity {
 
     //button
     private Button addShareList;
-    private Button cancelShareList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,19 +90,11 @@ public class VolunteerAddList<DialogBuilder> extends AppCompatActivity {
         dialogBuilder = new AlertDialog.Builder(this);
         final View layoutAddShareList = getLayoutInflater().inflate(R.layout.dialog_add_share_list, null);
         addShareList = (Button) layoutAddShareList.findViewById(R.id.add_button_share);
-        cancelShareList = (Button) layoutAddShareList.findViewById(R.id.cancel_button_share);
 
         //show the dialog
         dialogBuilder.setView(layoutAddShareList);
         dialog = dialogBuilder.create();
         dialog.show();
-
-        cancelShareList.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog.dismiss();
-            }
-        });
 
         addShareList.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -119,6 +110,8 @@ public class VolunteerAddList<DialogBuilder> extends AppCompatActivity {
                         arrayListUid.add(listUid);
                         userReference.setValue(user);
                         dialog.dismiss();
+                        Intent intent = new Intent(VolunteerAddList.this, VolunteerHome.class);
+                        startActivity(intent);
                     }
 
                     @Override
@@ -145,6 +138,7 @@ public class VolunteerAddList<DialogBuilder> extends AppCompatActivity {
             case R.id.return_ic:
                 Intent intent = new Intent(VolunteerAddList.this, VolunteerHome.class);
                 startActivity(intent);
+                break;
         }
         return super.onOptionsItemSelected(item);
     }

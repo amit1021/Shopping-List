@@ -4,13 +4,14 @@
 
     <item android:id="@+id/add_list"
         android:icon="@drawable/ic_icons8_plus"
-        android:iconTint="@color/black"
+        android:iconTint="@color/white"
         android:title="הוסף רשימה"
         app:showAsAction="always" />
 
     <item
         android:id="@+id/logout"
         android:icon="@drawable/ic_logout"
+        android:iconTint="@color/white"
         android:title="התנתק"
         app:showAsAction="always" />
 

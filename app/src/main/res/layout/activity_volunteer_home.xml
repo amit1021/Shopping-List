@@ -4,12 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background_cream"
     tools:context=".VolunteerHome">
 
     <LinearLayout
         android:id="@+id/linearLayout4"
-        android:layout_width="411dp"
-        android:layout_height="469dp"
+        android:layout_width="379dp"
+        android:layout_height="471dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -18,7 +19,8 @@
         <ListView
             android:id="@+id/list_view_volunteer_home"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:background="@drawable/background_cream" />
     </LinearLayout>
 
     <TextView
