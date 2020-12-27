@@ -1,77 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@drawable/ic_background_powerpoint"
     android:orientation="vertical">
 
 
     <EditText
         android:id="@+id/email_add_friend_text_view"
-        android:layout_width="241dp"
-        android:layout_height="69dp"
+        android:layout_width="236dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="44dp"
         android:ems="10"
-        android:hint="אימייל"
         android:fontFamily="@font/dorianclm_book_webfont"
+        android:hint="אימייל"
         android:inputType="textPersonName"
         android:textAlignment="viewEnd"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/reader_radioButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.355" />
-
-    <RadioButton
-        android:id="@+id/reader_radioButton"
-        android:layout_width="29dp"
-        android:layout_height="43dp"
-        android:layout_marginTop="84dp"
-        android:text="RadioButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.853"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <RadioButton
-        android:id="@+id/editor_radioButton"
-        android:layout_width="29dp"
-        android:layout_height="43dp"
-        android:layout_marginBottom="20dp"
-        android:text="RadioButton"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.853"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/reader_radioButton"
-        app:layout_constraintVertical_bias="0.087" />
 
     <TextView
         android:id="@+id/reader_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="300dp"
         android:fontFamily="@font/dorianclm_book_webfont"
         android:text="קורא"
         app:layout_constraintBottom_toTopOf="@+id/editor_text_view"
-        app:layout_constraintEnd_toStartOf="@+id/reader_radioButton"
-        app:layout_constraintHorizontal_bias="0.961"
+        app:layout_constraintEnd_toStartOf="@+id/radioGroup"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/email_add_friend_text_view"
-        app:layout_constraintVertical_bias="0.445" />
+        app:layout_constraintVertical_bias="0.553" />
 
     <TextView
         android:id="@+id/editor_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
+        android:layout_marginStart="300dp"
+        android:layout_marginBottom="60dp"
         android:fontFamily="@font/dorianclm_book_webfont"
         android:text="עורך"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/editor_radioButton"
-        app:layout_constraintHorizontal_bias="0.955"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
@@ -86,5 +61,27 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editor_text_view"
         app:layout_constraintVertical_bias="0.287" />
+
+    <RadioGroup
+        android:id="@+id/radioGroup"
+        android:layout_width="47dp"
+        android:layout_height="222dp"
+        tools:layout_editor_absoluteX="348dp"
+        tools:layout_editor_absoluteY="27dp">
+
+        <RadioButton
+            android:id="@+id/reader_radioButton"
+            android:layout_width="29dp"
+            android:layout_height="43dp"
+            android:layout_marginTop="84dp"
+            android:text="RadioButton" />
+
+        <RadioButton
+            android:id="@+id/editor_radioButton"
+            android:layout_width="29dp"
+            android:layout_height="43dp"
+            android:layout_marginBottom="20dp"
+            android:text="RadioButton" />
+    </RadioGroup>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

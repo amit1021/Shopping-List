@@ -24,20 +24,22 @@ public class FreindsInTheListActivity extends AppCompatActivity {
 
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference firebaseReference;
-
+    private DatabaseReference userReference;
     private ArrayList<UserPermission> userPermissions;
-    private ArrayAdapter<UserPermission> arrayAdapter;
+    private ArrayList<String> showPermissions;
+    private ArrayAdapter<String> arrayAdapter;
     private String listId;
     private ListView listView;
+    private String userName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_freinds_in_the_list);
-
+        showPermissions = new ArrayList<>();
         firebaseDatabase = FirebaseDatabase.getInstance();
         firebaseReference = firebaseDatabase.getReference("shopList");
-
+        userReference = firebaseDatabase.getReference("user");
         listView = (ListView)findViewById(R.id.freind_in_list_listView);
 
         listId = getIntent().getStringExtra("listId");
@@ -46,8 +48,7 @@ public class FreindsInTheListActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 userPermissions = snapshot.child(listId).getValue(ShopList.class).getPermissions();
-                arrayAdapter = new ArrayAdapter<>(FreindsInTheListActivity.this, android.R.layout.simple_list_item_1 ,userPermissions);
-                listView.setAdapter(arrayAdapter);
+                fillShowPermissions();
             }
 
 
@@ -77,5 +78,33 @@ public class FreindsInTheListActivity extends AppCompatActivity {
                 startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void fillShowPermissions(){
+        for (UserPermission up : userPermissions){
+            userReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    for (DataSnapshot snap : snapshot.getChildren()) {
+                        if(snap.getKey().equals(up.getUserUid())){
+                        User user = (User)snap.getValue(User.class);
+                        showPermissions.add(user.getUser() + "    "  + up.getRole());
+                        }
+                    }
+                }
+
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+        }     try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        arrayAdapter = new ArrayAdapter<>(FreindsInTheListActivity.this, R.layout.volunteer_row ,showPermissions);
+        listView.setAdapter(arrayAdapter);
     }
 }
