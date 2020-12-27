@@ -15,6 +15,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -35,7 +36,7 @@ public class AddListActivity extends AppCompatActivity {
     private DatabaseReference mShareListReference;
 
     private ListView listView;
-    private Button button;
+    private ImageButton button;
     private Button shareList;
     private Button barcode;
 
@@ -73,6 +74,7 @@ public class AddListActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(AddListActivity.this, BarcodeActivity.class);
+                intent.putExtra("key", listId);
                 startActivity(intent);
             }
         });
@@ -90,7 +92,7 @@ public class AddListActivity extends AppCompatActivity {
         //take the uid of the list that the user made
         String whichActivity = getIntent().getStringExtra("activity");
         //if the whichActivity equals to HomeActivity' we came from home activity and the list is already exist
-        if (whichActivity != null && (whichActivity.equals("HomeActivity") || whichActivity.equals("display"))) {
+        if (whichActivity != null && (whichActivity.equals("HomeActivity") || whichActivity.equals("display")) || whichActivity.equals("BarcodeActivity")) {
             firebaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -101,6 +103,12 @@ public class AddListActivity extends AppCompatActivity {
                     shopList = snapshot.child(listId).getValue(ShopList.class);
                     //ser the itemList to item to set
                     items = itemToSet;
+                    if (whichActivity.equals("BarcodeActivity")){
+                        String nameProduct = getIntent().getStringExtra("productName");
+                        EditText input = findViewById(R.id.item_name_text_view);
+                        System.out.println("----------------------------------------" + nameProduct + "-----------------------------------------");
+                        input.setText(nameProduct);
+                    }
                     setListner();
                 }
 
@@ -179,10 +187,10 @@ public class AddListActivity extends AppCompatActivity {
         final View layoutPermission = getLayoutInflater().inflate(R.layout.dialog_permission, null);
 
         //the button on th layout
-        email = (EditText) layoutPermission.findViewById(R.id.editTextTextPersonName);
+        email = (EditText) layoutPermission.findViewById(R.id.quantity_scan_text_view);
         editor = (Button) layoutPermission.findViewById(R.id.editor_button);
         reader = (Button) layoutPermission.findViewById(R.id.reader_button);
-        cancel = (Button) layoutPermission.findViewById(R.id.cancel_button);
+        cancel = (Button) layoutPermission.findViewById(R.id.add_item_scan_button);
 
         //show the dialog
         dialogBuilder.setView(layoutPermission);

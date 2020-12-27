@@ -1,5 +1,6 @@
 package com.example.shoplist;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -11,8 +12,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
@@ -28,7 +33,9 @@ public class BarcodeActivity extends AppCompatActivity {
     Button btnScan;
     EditText editText;
     String EditTextValue ;
+    String listId;
     ArrayList<Product> products = new ArrayList<>();
+
     Thread thread;
     public final static int QRcodeWidth = 350 ;
     Bitmap bitmap ;
@@ -45,9 +52,10 @@ public class BarcodeActivity extends AppCompatActivity {
         button = (Button)findViewById(R.id.button);
         btnScan = (Button)findViewById(R.id.btnScan);
         tv_qr_readTxt = (TextView) findViewById(R.id.tv_qr_readTxt);
+        listId = getIntent().getStringExtra("key");
 
-        Product p1 = new Product("Coca Cola", "7290001594056");
-        Product p2 = new Product("Tships Shamenet Batzal", "7290005200786");
+        Product p1 = new Product("קוקה קולה", "7290001594056");
+        Product p2 = new Product("צ'פס שמנת בצל", "7290005200786");
         products.add(p1);
         products.add(p2);
 
@@ -62,7 +70,6 @@ public class BarcodeActivity extends AppCompatActivity {
 
                     try {
                         bitmap = TextToImageEncode(EditTextValue);
-                        System.out.println("Bitmap------------------->" + bitmap.toString());
                         imageView.setImageBitmap(bitmap);
 
                     } catch (WriterException e) {
@@ -144,10 +151,14 @@ public class BarcodeActivity extends AppCompatActivity {
                 Log.e("Scan", "Scanned");
 
                 tv_qr_readTxt.setText(result.getContents());
-                System.out.println("--------------------------->" + result.getContents());
                 for (int i = 0; i < products.size(); i++){
                     if(products.get(i).getProductBarcode().equals(result.getContents())){
-                        openDialogAddProduct();
+                        Intent intent = new Intent(BarcodeActivity.this, AddListActivity.class);
+                        String productName = products.get(i).getProductName();
+                        intent.putExtra("productName", productName);
+                        intent.putExtra("activity", "BarcodeActivity");
+                        intent.putExtra("key", listId);
+                        startActivity(intent);
                     }
                 }
                 Toast.makeText(this, "Scanned: " + result.getContents(), Toast.LENGTH_LONG).show();
@@ -157,9 +168,6 @@ public class BarcodeActivity extends AppCompatActivity {
             super.onActivityResult(requestCode, resultCode, data);
         }
     }
-
-    private void openDialogAddProduct(){
-
-    }
 }
+
 

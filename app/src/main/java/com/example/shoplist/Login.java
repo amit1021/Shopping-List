@@ -35,15 +35,15 @@ public class Login extends AppCompatActivity {
     private String  userUid;
     private boolean answer;
 
-//    @Override
-//    protected void onStart() {
-//        super.onStart();
-//        FirebaseUser user = mFirebaseAuth.getCurrentUser();
-//        if (user != null) {
-//            userUid = user.getUid();
-//            init(userUid);
-//        }
-//    }
+    @Override
+    protected void onStart() {
+        super.onStart();
+        FirebaseUser user = mFirebaseAuth.getCurrentUser();
+        if (user != null) {
+            userUid = user.getUid();
+            init(userUid);
+        }
+    }
 
     private void init(String userUid) {
         answer = false;

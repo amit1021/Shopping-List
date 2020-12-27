@@ -4,15 +4,44 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/ic_background_powerpoint"
     tools:context=".DisplayShopToRead">
+
+    <LinearLayout
+        android:id="@+id/linearLayout3"
+        android:layout_width="410dp"
+        android:layout_height="620dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="70dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Title">
+
+
+        <ListView
+            android:id="@+id/listViewReader"
+            android:layout_width="382dp"
+            android:layout_height="596dp"
+            android:background="@drawable/ic_background_powerpoint"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/Title"
+            app:layout_constraintVertical_bias="0.0" />
+
+    </LinearLayout>
 
     <TextView
         android:id="@+id/Title"
         android:layout_width="312dp"
         android:layout_height="59dp"
-        android:layout_marginTop="4dp"
-        android:fontFamily="@font/titan_one"
-        android:text="רשימת הקניות:"
+        android:layout_marginTop="28dp"
+        android:fontFamily="@font/dorianclm_book_webfont"
+        android:text="רשימת קניות:"
         android:textAlignment="center"
         android:textAllCaps="true"
         android:textSize="30dp"
@@ -22,38 +51,4 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <LinearLayout
-        android:id="@+id/linearLayout3"
-        android:layout_width="410dp"
-        android:layout_height="620dp"
-        android:layout_marginTop="12dp"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Title">
-
-
-        <View
-            android:id="@+id/divider3"
-            android:layout_width="416dp"
-            android:layout_height="1dp"
-            android:layout_marginStart="4dp"
-            android:layout_marginTop="8dp"
-            android:background="?android:attr/listDivider" />
-
-        <ListView
-            android:id="@+id/listViewReader"
-            android:layout_width="410dp"
-            android:layout_height="600dp"
-            android:background="@drawable/add_list"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/Title"
-            app:layout_constraintVertical_bias="0.0" />
-
-    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

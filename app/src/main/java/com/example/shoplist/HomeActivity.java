@@ -336,8 +336,8 @@ public class HomeActivity extends AppCompatActivity {
             mNotificationManager = getSystemService(NotificationManager.class);
         }
         String id = CHANNEL;
-        CharSequence name = "channel 1- example";
-        String description = "This is the desc of channel 1 example";
+        CharSequence name = "Shopping list";
+        String description = "some volunteer take you'r shopping list ";
         int importance = NotificationManager.IMPORTANCE_HIGH;
         NotificationChannel mChannel = null;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -363,9 +363,9 @@ public class HomeActivity extends AppCompatActivity {
             notificationBuilder = new Notification.Builder(this);
         }
         Notification notification = notificationBuilder
-                .setContentTitle("notification type "+channel)
-                .setSmallIcon(R.drawable.return_icon)
-                .setContentText("You have a new message in channel "+channel).build();
+                .setContentTitle("Shopping list")
+                .setSmallIcon(R.drawable.ic_shopping_cart)
+                .setContentText("Some volunteer take you'r shopping list").build();
         NotificationManager notificationManager =
                 (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         notificationManager.notify((int) System.currentTimeMillis(), notification);

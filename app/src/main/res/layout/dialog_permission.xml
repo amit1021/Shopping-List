@@ -11,7 +11,7 @@
 <!--    android:layout_gravity="center_vertical">-->
 
     <EditText
-        android:id="@+id/editTextTextPersonName"
+        android:id="@+id/quantity_scan_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -40,7 +40,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.435"
         app:layout_constraintStart_toEndOf="@+id/reader_button"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName"
+        app:layout_constraintTop_toBottomOf="@+id/quantity_scan_text_view"
         app:layout_constraintVertical_bias="1.0" />
 
     <Button
@@ -55,12 +55,12 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/editor_button"
         app:layout_constraintHorizontal_bias="0.435"
-        app:layout_constraintStart_toEndOf="@+id/cancel_button"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName"
+        app:layout_constraintStart_toEndOf="@+id/add_item_scan_button"
+        app:layout_constraintTop_toBottomOf="@+id/quantity_scan_text_view"
         app:layout_constraintVertical_bias="1.0" />
 
     <Button
-        android:id="@+id/cancel_button"
+        android:id="@+id/add_item_scan_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -72,7 +72,7 @@
         app:layout_constraintEnd_toStartOf="@+id/reader_button"
         app:layout_constraintHorizontal_bias="0.435"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName"
+        app:layout_constraintTop_toBottomOf="@+id/quantity_scan_text_view"
         app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
