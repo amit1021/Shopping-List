@@ -69,7 +69,7 @@ public class addParticipant {
 
     private static void updateShopListPermission(String email, String userUid, String listId, String type) {
         FirebaseDatabase friend_database = FirebaseDatabase.getInstance();
-        DatabaseReference friend_mShopListPointer = friend_database.getReference("\"shopList\"");
+        DatabaseReference friend_mShopListPointer = friend_database.getReference("shopList");
 
         friend_mShopListPointer.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

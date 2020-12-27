@@ -39,7 +39,7 @@ public class DisplayShopToRead extends AppCompatActivity {
         activity = getIntent().getStringExtra("activity");
         //init
         database = FirebaseDatabase.getInstance();
-        mDatabaseRef = database.getReference("\"shopList\"");
+        mDatabaseRef = database.getReference("shopList");
         //init listView
         listView = findViewById(R.id.listViewReader);
 

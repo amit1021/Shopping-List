@@ -56,7 +56,7 @@ public class VolunteerAddList<DialogBuilder> extends AppCompatActivity {
         firebaseDatabase = FirebaseDatabase.getInstance();
 //        userReference = firebaseDatabase.getReference("\"volunteer\"").child(userUid);
         userReference = firebaseDatabase.getReference().child("volunteer").child(userUid);
-        databaseReference = firebaseDatabase.getReference("\"shareList\"");
+        databaseReference = firebaseDatabase.getReference("shareList");
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {

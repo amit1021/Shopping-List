@@ -1,26 +1,25 @@
 package com.example.shoplist;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -28,12 +27,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.io.Serializable;
-import java.security.Permission;
 import java.util.ArrayList;
-import java.util.List;
 
 public class HomeActivity extends AppCompatActivity {
+
+    private final String CHANNEL = "channel-1";
 
     private AlertDialog.Builder dialogBuilder;
     private AlertDialog dialog;
@@ -57,6 +55,8 @@ public class HomeActivity extends AppCompatActivity {
     private FirebaseDatabase database;
     private DatabaseReference mDatabase;
     private DatabaseReference mCurrentUser;
+    private DatabaseReference mSharList;
+
 
     private FirebaseAuth firebaseAuth;
 
@@ -65,6 +65,7 @@ public class HomeActivity extends AppCompatActivity {
     private ArrayList<String> listUID = new ArrayList<>();
     private ArrayList<ShopList> Allshop_list = new ArrayList<>();
     private ArrayList<ShopList> Allshop_share = new ArrayList<>();
+    private ArrayList<ShareList> share_list = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,11 +75,13 @@ public class HomeActivity extends AppCompatActivity {
         addListIntent = new Intent(HomeActivity.this, AddListActivity.class);
         //initialization
         database = FirebaseDatabase.getInstance();
-        mDatabase = database.getReference("\"shopList\"");
+        mDatabase = database.getReference("shopList");
+        mSharList = database.getReference("shareList");
         //init the list of user UID
         initlistUID();
         listView = (ListView) findViewById(R.id.myListView);
         listViewListShare = (ListView) findViewById(R.id.myListShare);
+
     }
 
     private void initShopListUID() {
@@ -123,6 +126,7 @@ public class HomeActivity extends AppCompatActivity {
                 User user = (User) snapshot.getValue(User.class);
                 listUID = user.getShopListUID();
                 initShopListUID();
+                initSharelist();
             }
 
             @Override
@@ -290,4 +294,83 @@ public class HomeActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+    private void initSharelist (){
+        mSharList.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                //take the list from the database
+                for (DataSnapshot snap : snapshot.getChildren()) {
+                    ShareList shareList = (ShareList) snap.getValue(ShareList.class);
+                    for (int i = 0; i < listUID.size(); i++) {
+                        //check if the user have the list
+                        if (listUID.get(i) != null && listUID.get(i).equals(shareList.getListUid())) {
+                            share_list.add(shareList);
+                            }
+                        }
+
+                    }
+                notification();
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
+
+    }
+
+    private void notification(){
+        for(int i = 0; i < Allshop_share.size(); i++){
+            if (share_list.get(i).isSelected() && !share_list.get(i).isNotification()){
+                share_list.get(i).setNotification(true);
+                createChannel();
+                addNotification(CHANNEL);
+            }
+        }
+    }
+    private void createChannel()
+    {
+        NotificationManager mNotificationManager= null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+            mNotificationManager = getSystemService(NotificationManager.class);
+        }
+        String id = CHANNEL;
+        CharSequence name = "channel 1- example";
+        String description = "This is the desc of channel 1 example";
+        int importance = NotificationManager.IMPORTANCE_HIGH;
+        NotificationChannel mChannel = null;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            mChannel = new NotificationChannel(id, name, importance);
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            mChannel.setDescription(description);
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            mNotificationManager.createNotificationChannel(mChannel);
+        }
+    }
+
+
+    private void addNotification(String channel)
+    {
+        Notification.Builder notificationBuilder;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+        {
+            notificationBuilder = new Notification.Builder(this, channel);
+        } else {
+//noinspection deprecation
+            notificationBuilder = new Notification.Builder(this);
+        }
+        Notification notification = notificationBuilder
+                .setContentTitle("notification type "+channel)
+                .setSmallIcon(R.drawable.return_icon)
+                .setContentText("You have a new message in channel "+channel).build();
+        NotificationManager notificationManager =
+                (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        notificationManager.notify((int) System.currentTimeMillis(), notification);
+//notificationManager.notify(1, notification);
+    }
+
+
+
 }

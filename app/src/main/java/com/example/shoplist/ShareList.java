@@ -8,6 +8,7 @@ public class ShareList {
     private String listUid;
     private String nameList;
     private boolean selected;
+    private boolean notification;
 
     public ShareList(){
         ;
@@ -21,6 +22,7 @@ public class ShareList {
         this.listUid = listUid;
         this.nameList = nameList;
         this.selected = false;
+        this.notification = false;
     }
 
     public String getNameContact() {
@@ -49,6 +51,14 @@ public class ShareList {
 
     public boolean isSelected() {
         return selected;
+    }
+
+    public boolean isNotification() {
+        return notification;
+    }
+
+    public void setNotification(boolean notification) {
+        this.notification = notification;
     }
 
     public void setNameContact(String nameContact) {

@@ -75,8 +75,8 @@ public class AddListActivity extends AppCompatActivity {
 
         //initialization
         firebaseDatabase = FirebaseDatabase.getInstance();
-        firebaseReference = firebaseDatabase.getReference("\"shopList\"");
-        mShareListReference = firebaseDatabase.getReference("\"shareList\"");
+        firebaseReference = firebaseDatabase.getReference("shopList");
+        mShareListReference = firebaseDatabase.getReference("shareList");
 
         //take the uid of the list that the user made
         String whichActivity = getIntent().getStringExtra("activity");

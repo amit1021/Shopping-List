@@ -36,7 +36,7 @@ public class FreindsInTheListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_freinds_in_the_list);
 
         firebaseDatabase = FirebaseDatabase.getInstance();
-        firebaseReference = firebaseDatabase.getReference("\"shopList\"");
+        firebaseReference = firebaseDatabase.getReference("shopList");
 
         listView = (ListView)findViewById(R.id.freind_in_list_listView);
 
