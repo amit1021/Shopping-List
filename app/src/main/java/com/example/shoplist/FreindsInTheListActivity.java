@@ -40,7 +40,7 @@ public class FreindsInTheListActivity extends AppCompatActivity {
         firebaseDatabase = FirebaseDatabase.getInstance();
         firebaseReference = firebaseDatabase.getReference("shopList");
         userReference = firebaseDatabase.getReference("user");
-        listView = (ListView)findViewById(R.id.freind_in_list_listView);
+        listView = (ListView) findViewById(R.id.freind_in_list_listView);
 
         listId = getIntent().getStringExtra("listId");
 
@@ -69,42 +69,39 @@ public class FreindsInTheListActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch(item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.return_ic:
                 Intent intent = new Intent(FreindsInTheListActivity.this, AddListActivity.class);
-                intent.putExtra("key",listId);
+                intent.putExtra("key", listId);
                 intent.putExtra("activity", "display");
-              //  intent.putExtra("activity","friend");
+                //  intent.putExtra("activity","friend");
                 startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
     }
 
-    private void fillShowPermissions(){
-        for (UserPermission up : userPermissions){
-            userReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
+    private void fillShowPermissions() {
+        userReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (UserPermission up : userPermissions) {
                     for (DataSnapshot snap : snapshot.getChildren()) {
-                        if(snap.getKey().equals(up.getUserUid())){
-                        User user = (User)snap.getValue(User.class);
-                        showPermissions.add(user.getUser() + "    "  + up.getRole());
+                        if (snap.getKey().equals(up.getUserUid())) {
+                            User user = (User) snap.getValue(User.class);
+                            showPermissions.add(user.getUser() + "    " + up.getRole());
                         }
                     }
                 }
+                arrayAdapter = new ArrayAdapter<>(FreindsInTheListActivity.this, R.layout.volunteer_row, showPermissions);
+                listView.setAdapter(arrayAdapter);
+            }
 
 
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
 
-                }
-            });
-        }     try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        arrayAdapter = new ArrayAdapter<>(FreindsInTheListActivity.this, R.layout.volunteer_row ,showPermissions);
-        listView.setAdapter(arrayAdapter);
+            }
+        });
+
     }
 }

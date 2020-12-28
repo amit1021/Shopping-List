@@ -66,8 +66,8 @@
         android:id="@+id/radioGroup"
         android:layout_width="47dp"
         android:layout_height="222dp"
-        tools:layout_editor_absoluteX="348dp"
-        tools:layout_editor_absoluteY="27dp">
+        tools:layout_editor_absoluteX="367dp"
+        tools:layout_editor_absoluteY="8dp">
 
         <RadioButton
             android:id="@+id/reader_radioButton"
