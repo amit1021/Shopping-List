@@ -6,7 +6,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -18,6 +20,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.RadioButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
@@ -25,6 +28,12 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.WriterException;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 
 import java.util.ArrayList;
 
@@ -63,10 +72,17 @@ public class AddListActivity extends AppCompatActivity {
     private AlertDialog.Builder dialogBuilder;
     private AlertDialog dialog;
     private EditText email;
-    private Button editor;
-    private Button reader;
-    private Button cancel;
     private String listId;
+
+    //////////
+    ArrayList<Product> products = new ArrayList<>();
+
+    Thread thread;
+    public final static int QRcodeWidth = 350 ;
+    Bitmap bitmap ;
+
+    TextView tv_qr_readTxt;
+    //////////////////
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,12 +93,22 @@ public class AddListActivity extends AppCompatActivity {
         button = findViewById(R.id.add_item_button);
         shareList = findViewById(R.id.shareList_menu);
         barcode = findViewById(R.id.barcode_button);
+        Product p1 = new Product("קוקה קולה", "7290001594056");
+        Product p2 = new Product("צ'פס שמנת בצל", "7290005200786");
+        Product p3 = new Product("ספרינג תפוחים", "7290002323204");
+        products.add(p1);
+        products.add(p2);
+        products.add(p3);
         barcode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(AddListActivity.this, BarcodeActivity.class);
-                intent.putExtra("key", listId);
-                startActivity(intent);
+                IntentIntegrator integrator = new IntentIntegrator(AddListActivity.this);
+                integrator.setDesiredBarcodeFormats(IntentIntegrator.ALL_CODE_TYPES);
+                integrator.setPrompt("Scan");
+                integrator.setCameraId(0);
+                integrator.setBeepEnabled(false);
+                integrator.setBarcodeImageEnabled(false);
+                integrator.initiateScan();
             }
         });
 
@@ -112,8 +138,6 @@ public class AddListActivity extends AppCompatActivity {
                     items = itemToSet;
                     if (whichActivity.equals("BarcodeActivity")){
                         String nameProduct = getIntent().getStringExtra("productName");
-                        EditText input = findViewById(R.id.item_name_text_view);
-                        input.setText(nameProduct);
                     }
                     setListner();
                 }
@@ -366,5 +390,71 @@ public class AddListActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+
+
+
+    // ----------------------------------------Barcode Scanner Code----------------------------------------
+    Bitmap TextToImageEncode(String Value) throws WriterException {
+        BitMatrix bitMatrix;
+        try {
+            bitMatrix = new MultiFormatWriter().encode(
+                    Value,
+                    BarcodeFormat.DATA_MATRIX.QR_CODE,
+                    QRcodeWidth, QRcodeWidth, null
+            );
+
+        } catch (IllegalArgumentException Illegalargumentexception) {
+
+            return null;
+        }
+        int bitMatrixWidth = bitMatrix.getWidth();
+
+        int bitMatrixHeight = bitMatrix.getHeight();
+
+        int[] pixels = new int[bitMatrixWidth * bitMatrixHeight];
+
+        for (int y = 0; y < bitMatrixHeight; y++) {
+            int offset = y * bitMatrixWidth;
+
+            for (int x = 0; x < bitMatrixWidth; x++) {
+
+
+            }
+        }
+        Bitmap bitmap = Bitmap.createBitmap(bitMatrixWidth, bitMatrixHeight, Bitmap.Config.ARGB_4444);
+
+        bitmap.setPixels(pixels, 0, 350, 0, 0, bitMatrixWidth, bitMatrixHeight);
+        return bitmap;
+    }
+
+
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+        if(result != null) {
+            if(result.getContents() == null) {
+                Log.e("Scan*******", "Cancelled scan");
+
+            } else {
+                Log.e("Scan", "Scanned");
+
+//                tv_qr_readTxt.setText(result.getContents());
+                for (int i = 0; i < products.size(); i++){
+                    if(products.get(i).getProductBarcode().equals(result.getContents())){
+                        String productName = products.get(i).getProductName();
+                        EditText input = findViewById(R.id.item_name_text_view);
+                        input.setText(productName);
+                    }
+                }
+                Toast.makeText(this, "Scanned: " + result.getContents(), Toast.LENGTH_LONG).show();
+            }
+        } else {
+            // This is important, otherwise the result will not be passed to the fragment
+            super.onActivityResult(requestCode, resultCode, data);
+        }
     }
 }
