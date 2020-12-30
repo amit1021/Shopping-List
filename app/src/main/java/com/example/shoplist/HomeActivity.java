@@ -124,9 +124,11 @@ public class HomeActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 //take the list from the database
                 User user = (User) snapshot.getValue(User.class);
-                listUID = user.getShopListUID();
-                initShopListUID();
-                initSharelist();
+                if(user != null){
+                    listUID = user.getShopListUID();
+                    initShopListUID();
+                    initSharelist();
+                }
             }
 
             @Override

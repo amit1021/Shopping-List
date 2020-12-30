@@ -5,6 +5,6 @@
     android:layout_width="fill_parent"
     android:textSize="30sp"
     android:layout_gravity="center_vertical"
-    android:fontFamily="@font/amita_bold"
+    android:fontFamily="@font/dorianclm_book_webfont"
     android:textColor="@color/black"
     />

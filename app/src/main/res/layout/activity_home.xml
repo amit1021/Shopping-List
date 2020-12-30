@@ -5,7 +5,7 @@
     android:id="@+id/addList"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/in_the_back"
+    android:background="@drawable/ic_background_powerpoint"
     tools:context=".MainActivity">
 
     <LinearLayout
@@ -28,7 +28,7 @@
             android:layout_gravity="center"
             android:background="@drawable/back"
             android:cacheColorHint="@color/purple_200"
-            android:textSize="30sp" >
+            android:textSize="30sp">
 
         </ListView>
 
@@ -38,12 +38,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:text="הרשימות שנשלחו"
             android:fontFamily="@font/ankaclm_bold_webfont"
+            android:text="הרשימות שנשלחו"
             android:textAlignment="center"
             android:textColor="@color/teal_700"
             android:textSize="36sp"
-            android:textStyle="bold"            />
+            android:textStyle="bold" />
 
         <ListView
             android:id="@+id/myListShare"
@@ -75,16 +75,16 @@
         app:layout_constraintHorizontal_bias="0.482"
         app:layout_constraintStart_toStartOf="parent" />
 
-<!--    <View-->
-<!--        android:id="@+id/divider2"-->
-<!--        android:layout_width="300dp"-->
-<!--        android:layout_height="4dp"-->
-<!--        android:background="?android:attr/listDivider"-->
-<!--        app:layout_constraintBottom_toTopOf="@+id/myList"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/myList_textView"-->
-<!--        tools:visibility="gone" />-->
+    <!--    <View-->
+    <!--        android:id="@+id/divider2"-->
+    <!--        android:layout_width="300dp"-->
+    <!--        android:layout_height="4dp"-->
+    <!--        android:background="?android:attr/listDivider"-->
+    <!--        app:layout_constraintBottom_toTopOf="@+id/myList"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toBottomOf="@+id/myList_textView"-->
+    <!--        tools:visibility="gone" />-->
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

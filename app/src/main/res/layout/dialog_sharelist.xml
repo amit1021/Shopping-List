@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_gravity="center">
+    android:layout_gravity="center"
+    android:background="@drawable/ic_background_powerpoint">
 
     <Button
         android:id="@+id/send_sharelist_button"
@@ -47,9 +48,9 @@
         android:id="@+id/phone_contact"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/dorianclm_book_webfont"
         android:layout_marginBottom="8dp"
         android:ems="10"
+        android:fontFamily="@font/dorianclm_book_webfont"
         android:hint="מספר פלאפון"
         android:inputType="phone"
         android:textAlignment="viewEnd"
@@ -62,10 +63,10 @@
         android:id="@+id/city_contact"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/dorianclm_book_webfont"
         android:layout_marginTop="12dp"
         android:layout_marginBottom="12dp"
         android:ems="10"
+        android:fontFamily="@font/dorianclm_book_webfont"
         android:hint="עיר"
         android:inputType="textPersonName"
         app:layout_constraintBottom_toTopOf="@+id/street_contact"

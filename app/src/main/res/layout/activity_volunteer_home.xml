@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background_cream"
+    android:background="@drawable/ic_background_powerpoint"
     tools:context=".VolunteerHome">
 
     <LinearLayout
@@ -20,7 +20,7 @@
             android:id="@+id/list_view_volunteer_home"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/background_cream" />
+            android:background="@drawable/ic_background_powerpoint" />
     </LinearLayout>
 
     <TextView

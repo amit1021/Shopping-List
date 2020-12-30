@@ -11,49 +11,18 @@
         android:id="@+id/title2"
         android:layout_width="312dp"
         android:layout_height="83dp"
+        android:layout_marginTop="72dp"
         android:fontFamily="@font/amita_bold"
         android:text="Shoping List"
         android:textAlignment="center"
         android:textColor="@color/black"
         android:textSize="30sp"
-        tools:layout_editor_absoluteX="49dp"
-        tools:layout_editor_absoluteY="94dp" />
-
-    <EditText
-        android:id="@+id/userName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:ems="10"
-        android:fontFamily="@font/titan_one"
-        android:hint="שם מלא"
-        android:inputType="textPersonName"
-        android:textColor="@color/black"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/userName"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/title2"
-        app:layout_constraintVertical_bias="0.116" />
-
-    <EditText
-        android:id="@+id/email"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:ems="10"
-        android:fontFamily="@font/titan_one"
-        android:hint="אימייל"
-        android:inputType="textPersonName"
-        android:textColor="@color/black"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/userName"
-        app:layout_constraintVertical_bias="0.11" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.083" />
 
     <EditText
         android:id="@+id/pass"
@@ -71,7 +40,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/email"
-        app:layout_constraintVertical_bias="0.119" />
+        app:layout_constraintVertical_bias="0.145" />
+
+    <Button
+        android:id="@+id/register"
+        android:layout_width="wrap_content"
+        android:layout_height="45dp"
+        android:layout_marginTop="36dp"
+        android:layout_marginEnd="80dp"
+        android:backgroundTint="#009688"
+        android:text="הרשם"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/pass2" />
 
     <EditText
         android:id="@+id/pass2"
@@ -89,37 +69,55 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/pass"
-        app:layout_constraintVertical_bias="0.142" />
+        app:layout_constraintVertical_bias="0.164" />
 
     <Button
-        android:id="@+id/register"
+        android:id="@+id/register_volunteer"
+        android:layout_width="134dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="36dp"
+        android:layout_marginEnd="24dp"
+        android:backgroundTint="#71BFB8"
+        android:text="הרשם כמתנדב"
+        app:layout_constraintEnd_toStartOf="@+id/register"
+        app:layout_constraintHorizontal_bias="0.917"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/pass2" />
+
+    <EditText
+        android:id="@+id/userName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:backgroundTint="#009688"
-        android:text="הרשם"
+        android:layout_marginBottom="436dp"
+        android:ems="10"
+        android:fontFamily="@font/titan_one"
+        android:hint="שם מלא"
+        android:inputType="textPersonName"
+        android:textColor="@color/black"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.711"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/pass2"
-        app:layout_constraintVertical_bias="0.217" />
+        app:layout_constraintStart_toStartOf="parent" />
 
-    <Button
-        android:id="@+id/register_volunteer"
-        android:layout_width="138dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginBottom="272dp"
-        android:backgroundTint="#71BFB8"
-        android:text="הרשם כמתנדב"
+    <EditText
+        android:id="@+id/email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:ems="10"
+        android:fontFamily="@font/titan_one"
+        android:hint="אימייל"
+        android:inputType="textPersonName"
+        android:textColor="@color/black"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/register"
-        app:layout_constraintHorizontal_bias="0.776"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/pass2"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toTopOf="@id/userName"
+        app:layout_constraintVertical_bias="0.119" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

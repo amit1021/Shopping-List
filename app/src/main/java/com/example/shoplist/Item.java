@@ -30,7 +30,7 @@ public class Item {
     }
 
     public String toString(){
-        return this.name + "    " + this.quantity;
+        return " " + this.name + "    " + this.quantity;
     }
 
     public boolean equal(Item item){

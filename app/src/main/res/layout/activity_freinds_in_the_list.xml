@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/ic_background_powerpoint"
     tools:context=".FreindsInTheListActivity">
 
     <LinearLayout
@@ -27,12 +28,12 @@
         android:id="@+id/textView2"
         android:layout_width="228dp"
         android:layout_height="75dp"
+        android:fontFamily="@font/ankaclm_bold_webfont"
         android:text="משתתפים"
         android:textAlignment="center"
+        android:textColor="@color/mr_cast_progressbar_progress_and_thumb_dark"
         android:textSize="30sp"
         android:textStyle="bold"
-        android:fontFamily="@font/ankaclm_bold_webfont"
-        android:textColor="@color/mr_cast_progressbar_progress_and_thumb_dark"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
