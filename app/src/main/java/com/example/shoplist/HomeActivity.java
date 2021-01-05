@@ -19,6 +19,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -228,7 +229,11 @@ public class HomeActivity extends AppCompatActivity {
             public void onClick(View view) {
                 listNameString = listName.getText().toString();
                 String keyId = mDatabase.push().getKey();
-
+                if(listNameString.isEmpty()){
+                    Toast.makeText(HomeActivity.this, "missing name", Toast.LENGTH_LONG).show();
+                    dialog.dismiss();
+                    return;
+                }
 
                 //initialization
                 firebaseAuth = FirebaseAuth.getInstance();
